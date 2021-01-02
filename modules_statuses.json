@@ -1,3 +1,5 @@
 {
-    "Student": true
+    "Student": true,
+    "Doctor": true,
+    "Admin": true
 }
