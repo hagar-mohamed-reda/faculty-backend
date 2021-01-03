@@ -5,20 +5,20 @@ namespace Modules\Admin\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Admin\Entities\Devision;
+use Modules\Admin\Entities\Division;
 
-class DevisionController extends Controller
+class DivisionController extends Controller
 {
     public function index()
     {
-        $query = Devision::latest()->get();
+        $query = Division::latest()->get();
         return $query;
     }
 
     public function store(Request $request)
     {
         $validator = validator($request->all(), [
-            "name" => "required|unique:devisions,name,".$request->id,
+            "name" => "required|unique:divisions,name,".$request->id,
         ]);
 
         if ($validator->fails()) {
@@ -30,18 +30,18 @@ class DevisionController extends Controller
 			if (!isset($data['faculty_id'])) {
 				$data['faculty_id'] = optional($request->user)->faculty_id;
 			}
-            $resource = Devision::create($data);
-			watch("add devision " . $resource->name, "fa fa-bank-up");
+            $resource = Division::create($data);
+			watch("add division " . $resource->name, "fa fa-bank-up");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
         }
     }
 
-    public function update(Request $request, Devision $resource)
+    public function update(Request $request, Division $resource)
     {
         $validator = validator($request->all(), [
-            "name" => "required|unique:devisions,name,".$request->id,
+            "name" => "required|unique:divisions,name,".$request->id,
         ]);
 
         if ($validator->fails()) {
@@ -49,17 +49,17 @@ class DevisionController extends Controller
         }
         try {
             $resource->update($request->all());
-			watch("edit devision " . $resource->name, "fa fa-bank-up");
+			watch("edit division " . $resource->name, "fa fa-bank-up");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
         }
     }
 
-    public function destroy(Devision $resource)
+    public function destroy(Division $resource)
     {
         try {
-			watch("remove devision " . $resource->name, "fa fa-bank-up");
+			watch("remove division " . $resource->name, "fa fa-bank-up");
             $resource->delete();
             return responseJson(1, __('done'));
         } catch (\Exception $th) {
