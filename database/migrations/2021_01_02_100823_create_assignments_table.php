@@ -28,6 +28,14 @@ class CreateAssignmentsTable extends Migration
             $table->integer('degree');
 
             $table->timestamps();
+            /*
+            $table->foreign('faculty_id')->references('id')->on('faculty')->onDelete('cascade');
+            $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('cascade');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('lecture_id')->references('id')->on('lectures')->onDelete('cascade');
+            $table->foreign('term_id')->references('id')->on('terms')->onDelete('cascade');
+            $table->foreign('academic_year_id')->references('id')->on('academic_years')->onDelete('cascade');
+            */
         });
     }
 

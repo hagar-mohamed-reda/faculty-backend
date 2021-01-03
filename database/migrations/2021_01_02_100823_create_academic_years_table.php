@@ -19,7 +19,11 @@ class CreateAcademicYearsTable extends Migration
             $table->unsignedBigInteger('faculty_id')->nullable();
 
             $table->timestamps();
+
+            //$table->foreign('faculty_id')->references('id')->on('faculty')->onDelete('cascade');
+
         });
+
     }
 
     /**
