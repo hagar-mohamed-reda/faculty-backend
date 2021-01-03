@@ -9,31 +9,17 @@ use Modules\Admin\Entities\Level;
 
 class LevelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
+
     public function index()
     {
-        $query = Level::latest()->get(); 
+        $query = Level::latest()->get();
         return $query;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-
-
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
-     */
     public function store(Request $request)
     {
         $validator = validator($request->all(), [
-            "name" => "required", 
+            "name" => "required|unique:levels,name,".$request->id,
         ]);
 
         if ($validator->fails()) {
@@ -41,7 +27,7 @@ class LevelController extends Controller
         }
         try {
 			$data = $request->all();
-			
+
 			if (!isset($data['faculty_id'])) {
 				$data['faculty_id'] = optional($request->user)->faculty_id;
 			}
@@ -53,31 +39,10 @@ class LevelController extends Controller
         }
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
     public function update(Request $request, Level $resource)
     {
         $validator = validator($request->all(), [
-            "name" => "required",
-            "faculty_id" => "required",
+            "name" => "required|unique:levels,name,".$request->id,
         ]);
 
         if ($validator->fails()) {
@@ -92,11 +57,6 @@ class LevelController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
     public function destroy(Level $resource)
     {
         try {
