@@ -16,21 +16,21 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('photo');
-            $table->string('username');
-            $table->string('password');
+            $table->string('photo')->nullable();
+            $table->string('username')->nullable();
+            $table->string('password')->nullable();
             $table->unsignedBigInteger('level_id')->nullable();
             $table->unsignedBigInteger('department_id')->nullable();
             $table->unsignedBigInteger('division_id')->nullable();
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->string('code');
-            $table->string('phone');
-            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->string('national_id');
-            $table->boolean('active',0);
-            $table->string('sms_code');
-            $table->enum('type', ['normal', 'graduated']);
-
+            $table->boolean('active',1);
+            $table->string('sms_code')->nullable();
+            $table->enum('type', ['normal', 'graduated'],'normal');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
