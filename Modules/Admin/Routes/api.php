@@ -74,3 +74,6 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('academic-years/delete/{resource}', 'AcademicYearController@destroy');
 
 });
+
+Route::post('login', 'AuthController@login');
+Route::post('forget-password', 'AuthController@forgetPassword');
