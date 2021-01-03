@@ -74,9 +74,9 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('academic-years/delete/{resource}', 'AcademicYearController@destroy');
 
      // translation start
-     Route::get('translation', 'TranslationController@index');
-     Route::get('translation/get', 'TranslationController@get');
-     Route::post('translation/update', 'TranslationController@update');
+     Route::get('translations', 'TranslationController@index');
+     Route::get('translations/get', 'TranslationController@get');
+     Route::post('translations/update', 'TranslationController@update');
 
 });
 
