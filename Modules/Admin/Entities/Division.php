@@ -4,7 +4,7 @@ namespace Modules\Admin\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Devision extends Model
+class Division extends Model
 {
     protected $table = 'divisions';
     protected $fillable = [
