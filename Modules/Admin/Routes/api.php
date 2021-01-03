@@ -49,6 +49,12 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('specializations/update/{resource}', 'SpecializationController@update');
     Route::post('specializations/delete/{resource}', 'SpecializationController@destroy');
 
+    //degrees start
+    Route::get('degrees', 'DegreeController@index');
+    Route::post('degrees/store', 'DegreeController@store');
+    Route::post('degrees/update/{resource}', 'DegreeController@update');
+    Route::post('degrees/delete/{resource}', 'DegreeController@destroy');
+
     //degree-maps start
     Route::get('degree-maps', 'DegreeMapController@index');
     Route::post('degree-maps/store', 'DegreeMapController@store');
