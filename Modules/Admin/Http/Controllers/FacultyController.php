@@ -20,6 +20,8 @@ class FacultyController extends Controller
     {
         $validator = validator($request->all(), [
             "name" => "required|unique:faculty,name,".$request->id,
+            "logo"=> "nullable",
+            "description"=> "nullable",
         ]);
 
         if ($validator->fails()) {
