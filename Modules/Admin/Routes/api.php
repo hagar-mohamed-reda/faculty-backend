@@ -81,6 +81,13 @@ Route::group(['middleware' => 'api_auth'], function () {
     //notifications start
     Route::get("notifications", "NotificationController@getNotifications");
 
+    //students start
+    Route::get('students', 'StudentController@index');
+    Route::post('students/store', 'StudentController@store');
+    Route::post('students/update/{resource}', 'StudentController@update');
+    Route::post('students/delete/{resource}', 'StudentController@destroy');
+
+
 
 });
 
