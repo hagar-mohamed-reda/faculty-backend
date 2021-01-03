@@ -15,8 +15,7 @@ class LevelController extends Controller
      */
     public function index()
     {
-        $query = Level::latest()->get();
-
+        $query = Level::latest()->get(); 
         return $query;
     }
 
@@ -34,15 +33,20 @@ class LevelController extends Controller
     public function store(Request $request)
     {
         $validator = validator($request->all(), [
-            "name" => "required",
-            "faculty_id" => "required",
+            "name" => "required", 
         ]);
 
         if ($validator->fails()) {
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
         try {
-            $resource = Level::create($request->all());
+			$data = $request->all();
+			
+			if (!isset($data['faculty_id'])) {
+				$data['faculty_id'] = optional($request->user)->faculty_id;
+			}
+            $resource = Level::create($data);
+			watch("add level " . $resource->name, "fa fa-level-up");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
@@ -81,6 +85,7 @@ class LevelController extends Controller
         }
         try {
             $resource->update($request->all());
+			watch("edit level " . $resource->name, "fa fa-level-up");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
@@ -95,7 +100,8 @@ class LevelController extends Controller
     public function destroy(Level $resource)
     {
         try {
-                $resource->delete();
+			watch("remove level " . $resource->name, "fa fa-level-up");
+            $resource->delete();
             return responseJson(1, __('done'));
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
