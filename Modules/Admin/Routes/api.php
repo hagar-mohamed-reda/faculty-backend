@@ -55,4 +55,10 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('degree-maps/update/{resource}', 'DegreeMapController@update');
     Route::post('degree-maps/delete/{resource}', 'DegreeMapController@destroy');
 
+    //research-degree-maps start
+    Route::get('research-degree-maps', 'ResearchDegreeMapController@index');
+    Route::post('research-degree-maps/store', 'ResearchDegreeMapController@store');
+    Route::post('research-degree-maps/update/{resource}', 'ResearchDegreeMapController@update');
+    Route::post('research-degree-maps/delete/{resource}', 'ResearchDegreeMapController@destroy');
+
 });
