@@ -31,4 +31,10 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('departments/update/{resource}', 'DepartmentController@update');
     Route::post('departments/delete/{resource}', 'DepartmentController@destroy');
 
+    //devisions start
+    Route::get('devisions', 'DevisionController@index');
+    Route::post('devisions/store', 'DevisionController@store');
+    Route::post('devisions/update/{resource}', 'DevisionController@update');
+    Route::post('devisions/delete/{resource}', 'DevisionController@destroy');
+
 });
