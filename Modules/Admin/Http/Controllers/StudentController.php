@@ -59,5 +59,18 @@ class StudentController extends Controller
         }
     }
 
+    public function destroy(Student $resource)
+    {
+        try {
+			watch("remove student " . $resource->name, "fa fa-bank-up");
+            $resource->delete();
+            return responseJson(1, __('done'));
+        } catch (\Exception $th) {
+            return responseJson(0, $th->getMessage());
+        }
+    }
+
     
+
+
 }
