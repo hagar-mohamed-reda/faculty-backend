@@ -18,7 +18,7 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         $validator = validator($request->all(), [
-            "name" => "required|unique:departments,name,".$request->id,
+            "name" => "required",
             "level_id"=> "required",
             "division_id"=> "required",
         ]);
@@ -43,7 +43,7 @@ class DepartmentController extends Controller
     public function update(Request $request, Department $resource)
     {
         $validator = validator($request->all(), [
-            "name" => "required|unique:departments,name,".$request->id,
+            "name" => "required",
             "level_id"=> "required",
             "division_id"=> "required",
         ]);
