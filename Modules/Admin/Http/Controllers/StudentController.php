@@ -86,7 +86,7 @@ class StudentController extends Controller
     }
 
     public function getImportTemplateFile(){
-        return response()->download('public/uploads/excel/add_student_template.xlsx');
+        return response()->download('uploads/excel/add_student_template.xlsx');
     }
 
 
