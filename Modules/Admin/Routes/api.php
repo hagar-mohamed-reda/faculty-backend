@@ -78,6 +78,10 @@ Route::group(['middleware' => 'api_auth'], function () {
      Route::get('translations/get', 'TranslationController@get');
      Route::post('translations/update', 'TranslationController@update');
 
+    //notifications start
+    Route::get("notifications", "NotificationController@getNotifications");
+
+
 });
 
 Route::post('login', 'AuthController@login');
