@@ -28,7 +28,7 @@ class AcademicYearController extends Controller
         }
         try {
             $data = $request->all();
-            $data->name = date("Y", strtotime($request->start_date)) . "-" . date("Y", strtotime($request->end_date));
+            $data['name'] = date("Y", strtotime($request->start_date)) . "-" . date("Y", strtotime($request->end_date));
 
 			if (!isset($data['faculty_id'])) {
 				$data['faculty_id'] = optional($request->user)->faculty_id;
@@ -53,7 +53,7 @@ class AcademicYearController extends Controller
         }
         try {
             $data = $request->all();
-            $data->name = date("Y", strtotime($request->start_date)) . "-" . date("Y", strtotime($request->end_date));
+            $data['name'] = date("Y", strtotime($request->start_date)) . "-" . date("Y", strtotime($request->end_date));
 
             $resource->update($data);
 			watch("edit academic year " . $resource->name, "fa fa-bank-up");
