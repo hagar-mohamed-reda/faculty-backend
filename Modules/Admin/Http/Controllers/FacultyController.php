@@ -22,6 +22,12 @@ class FacultyController extends Controller
             "name" => "required|unique:faculty,name,".$request->id,
             "logo"=> "nullable",
             "description"=> "nullable",
+            "message_text"=> "nullable",
+            "message_file"=> "nullable",
+            "vision_text"=> "nullable",
+            "vision_file"=> "nullable",
+            "target_text"=> "nullable",
+            "target_file"=> "nullable",
         ]);
 
         if ($validator->fails()) {
@@ -45,6 +51,14 @@ class FacultyController extends Controller
     {
         $validator = validator($request->all(), [
             "name" => "required|unique:faculty,name,".$request->id,
+            "logo"=> "nullable",
+            "description"=> "nullable",
+            "message_text"=> "nullable",
+            "message_file"=> "nullable",
+            "vision_text"=> "nullable",
+            "vision_file"=> "nullable",
+            "target_text"=> "nullable",
+            "target_file"=> "nullable",
         ]);
 
         if ($validator->fails()) {
