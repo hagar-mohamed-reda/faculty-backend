@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Admin\Entities\Student;
+use Maatwebsite\Excel\Facades\Excel;
+use Modules\Admin\http\Exports\StudentsExport;
+use Modules\Admin\http\Imports\StudentsImport;
 
 class StudentController extends Controller
 {
@@ -70,7 +73,23 @@ class StudentController extends Controller
         }
     }
 
-    
+    public function export()
+    {
+        return Excel::download(new StudentsExport, 'students.xlsx');
+    }
+
+    public function import()
+    {
+        Excel::import(new StudentsImport,request()->file('file'));
+
+        return responseJson(1, __('done'));
+    }
+
+    public function getImportTemplateFile(){
+        return response()->download('public/uploads/excel/add_student_template.xlsx');
+    }
+
+
 
 
 }

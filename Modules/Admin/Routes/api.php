@@ -88,6 +88,7 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('students/delete/{resource}', 'StudentController@destroy');
     Route::post('students/import', 'StudentController@import');
     Route::get('students/export', 'StudentController@export');
+    Route::get('students/import-file', 'StudentController@getImportTemplateFile');
 
 
 });
