@@ -43,4 +43,10 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('facultys/update/{resource}', 'FacultyController@update');
     Route::post('facultys/delete/{resource}', 'FacultyController@destroy');
 
+    //specializations start
+    Route::get('specializations', 'SpecializationController@index');
+    Route::post('specializations/store', 'SpecializationController@store');
+    Route::post('specializations/update/{resource}', 'SpecializationController@update');
+    Route::post('specializations/delete/{resource}', 'SpecializationController@destroy');
+
 });
