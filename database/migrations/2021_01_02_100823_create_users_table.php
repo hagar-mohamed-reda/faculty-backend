@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->unsignedBigInteger('role_id')->nullable();
             $table->enum('type', ['admin', 'student', 'doctor', 'super_admin']);
-
+            $table->longText('api_token');
             $table->timestamps();
         });
     }
