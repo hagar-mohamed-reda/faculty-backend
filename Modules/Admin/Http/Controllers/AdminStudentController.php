@@ -19,14 +19,17 @@ class AdminStudentController extends Controller
             $query->where('name', 'like', '%'. $request->search . '%');
 
         if ($request->level_id > 0)
-            $query->where('level_id', 'like', '%'. $request->level_id . '%');
+            $query->where('level_id', $request->level_id);
 
         if ($request->department_id > 0)
-            $query->where('department_id', 'like', '%'. $request->department_id . '%');
+            $query->where('department_id', $request->department_id);
 
         if ($request->division_id > 0)
-            $query->where('division_id', 'like', '%'. $request->division_id . '%');
+            $query->where('division_id', $request->division_id);
 
+        if ($request->type)
+            $query->where('type', $request->type);
+			
         return $query->with(['level', 'division', 'department'])->latest()->paginate(10);
     }
 
@@ -67,7 +70,9 @@ class AdminStudentController extends Controller
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
         try {
-            $resource->update($request->all());
+			$data = $request->all();
+			$data['division_id'] = optional($resource->department)->division_id;
+            $resource->update($data);
 			watch("edit student " . $resource->name, "fa fa-bank-up");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
@@ -103,7 +108,7 @@ class AdminStudentController extends Controller
     }
 
     public function getArchive(){
-        return  Student::onlyTrashed()->get();
+        return  Student::onlyTrashed()->with(['level', 'division', 'department'])->get();
     }
 
     public function restore(Request $request, $resource){

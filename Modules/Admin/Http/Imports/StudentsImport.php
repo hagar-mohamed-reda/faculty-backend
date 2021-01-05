@@ -27,11 +27,13 @@ class StudentsImport implements ToModel
                 'phone' => $this->preNumber($row[4]),
                 'email' => $row[5],
                 'username' => $row[2],
+                'active' => 1,
+                'type' => 'normal',
                 'password' => bcrypt($row[2]),
             ]);
 
             return $stds;
-        } catch (Exception $th) {
+        } catch (\Exception $th) {
             return null;
         }
     }

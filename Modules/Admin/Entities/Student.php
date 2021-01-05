@@ -17,7 +17,7 @@ class Student extends Model
         'password',
         'level_id',
         'department_id',
-        'devision_id',
+        'division_id',
         'faculty_id',
         'code',
         'phone',
