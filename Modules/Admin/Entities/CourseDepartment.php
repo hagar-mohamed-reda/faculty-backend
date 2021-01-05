@@ -1,0 +1,28 @@
+<?php
+
+namespace Modules\Admin\Entities;
+
+use Illuminate\Database\Eloquent\Model;
+use \Illuminate\Database\Eloquent\SoftDeletes;
+
+class CourseDepartment extends Model
+{
+    use SoftDeletes;
+
+    protected $table = 'course_departments';
+    protected $fillable = [
+        'course_id',
+        'faculty_id',
+        'division_id',
+    ];
+
+    protected $appends = ['can_delete'];
+
+    public function getCanDeleteAttribute() {
+        return true;
+    }
+
+    public function courses(){
+        return $this->belongsToMany(Course::class,'course_id');
+    }
+}

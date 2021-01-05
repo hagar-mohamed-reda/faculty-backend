@@ -38,6 +38,6 @@ class Course extends Model
     }
 
     public function departments(){
-        return $this->hasMany(Department::class, 'department_id');
+        return $this->hasMany(CourseDepartment::class, 'division_id');
     }
 }
