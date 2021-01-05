@@ -22,10 +22,21 @@ class Course extends Model
         'active',
     ];
 
-    protected $appends = ['can_delete'];
+    protected $appends = ['can_delete', 'register_student_count', 'register_doctor_count', 'department_count'];
 
     public function getCanDeleteAttribute() {
         return true;
+    }
+    public function getDepartmentCountAttribute() {
+        return $this->departments()->count();
+    }
+
+    public function getRegisterStudentCountAttribute() {
+        return $this->registerStudent()->count();
+    }
+
+    public function getRegisterDoctorCountAttribute() {
+        return $this->registerDoctor()->count();
     }
 
     public function level(){
@@ -39,5 +50,12 @@ class Course extends Model
 
     public function departments(){
         return $this->hasMany(CourseDepartment::class, 'division_id');
+    }
+
+    public function registerStudent(){
+        return $this->hasMany(RegisterStudent::class, 'course_id');
+    }
+    public function registerDoctor(){
+        return $this->hasMany(RegisterDoctor::class, 'course_id');
     }
 }
