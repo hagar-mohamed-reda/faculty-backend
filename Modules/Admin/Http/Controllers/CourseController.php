@@ -51,7 +51,15 @@ class CourseController extends Controller
 				$data['faculty_id'] = optional($request->user)->faculty_id;
 			}
             $resource = Course::create($data);
-			
+
+            foreach ($request->divisions as $division) {
+                DB::table('course_departments')->insert([
+                    'course_id' => $resource->id,
+                    'faculty_id' => $data['faculty_id'],
+                    'division_id' => $division,
+                ]);
+            }
+
 			watch("add course " . $resource->name, "fa fa-graduation-cap");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
@@ -74,6 +82,13 @@ class CourseController extends Controller
         }
         try {
 			$data = $request->all();
+
+            foreach ($request->divisions as $division) {
+                DB::table('course_departments')->where('course_id', $resource->id)
+                    ->update([
+                        'division_id' => $division,
+                    ]);
+            }
 
             $resource->update($data);
 			watch("edit course " . $resource->name, "fa fa-graduation-cap");
