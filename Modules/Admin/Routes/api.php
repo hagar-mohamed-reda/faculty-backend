@@ -103,6 +103,17 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::get('doctors/archive', 'DoctorController@getArchive');
     Route::post('doctors/restore/{resource}', 'DoctorController@restore');
 
+    //courses start
+    Route::get('courses', 'CourseController@get');
+    Route::post('courses/store', 'CourseController@store');
+    Route::post('courses/update/{resource}', 'CourseController@update');
+    Route::post('courses/delete/{resource}', 'CourseController@destroy');
+    Route::post('courses/import', 'CourseController@import');
+    Route::get('courses/export', 'CourseController@export');
+    Route::get('courses/import-file', 'CourseController@getImportTemplateFile');
+    Route::get('courses/archive', 'CourseController@getArchive');
+    Route::post('courses/restore/{resource}', 'CourseController@restore');
+
 
 });
 

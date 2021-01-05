@@ -24,7 +24,7 @@ class CreateCoursesTable extends Migration
             $table->string('description');
             $table->integer('final_degree');
             $table->boolean('active',0);
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }
