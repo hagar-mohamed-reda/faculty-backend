@@ -15,6 +15,11 @@ class AdminStudentController extends Controller
     public function get(Request $request){
 
         $query = Student::query();
+        if ($request->search)
+            $query->where('name', 'like', '%'. $request->search . '%');
+
+        if ($request->level_id > 0)
+            $query->where('level_id', 'like', '%'. $request->level_id . '%');
 
 
 
