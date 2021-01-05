@@ -21,7 +21,11 @@ class AdminStudentController extends Controller
         if ($request->level_id > 0)
             $query->where('level_id', 'like', '%'. $request->level_id . '%');
 
+        if ($request->department_id > 0)
+            $query->where('department_id', 'like', '%'. $request->department_id . '%');
 
+        if ($request->division_id > 0)
+            $query->where('division_id', 'like', '%'. $request->division_id . '%');
 
         return $query->with(['level', 'division', 'department'])->latest()->paginate(10);
     }
