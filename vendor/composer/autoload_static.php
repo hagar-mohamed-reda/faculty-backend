@@ -4,11 +4,7 @@
 
 namespace Composer\Autoload;
 
-<<<<<<< HEAD
-class ComposerStaticInit6c9126b4451140f67fdde0f4147c9e33
-=======
-class ComposerStaticInit0e9938f4cf64e2daa22e122fa8caa0a7
->>>>>>> ce8c4b7f333a25783b54252ff98cb48c3a22cc42
+class ComposerStaticInit883dff911910dac935442c861578e42a
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -3392,6 +3388,7 @@ class ComposerStaticInit0e9938f4cf64e2daa22e122fa8caa0a7
         'Modules\\Admin\\Entities\\Translation' => __DIR__ . '/../..' . '/Modules/Admin/Entities/Translation.php',
         'Modules\\Admin\\Http\\Controllers\\AcademicYearController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/AcademicYearController.php',
         'Modules\\Admin\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/AdminController.php',
+        'Modules\\Admin\\Http\\Controllers\\AdminStudentController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/AdminStudentController.php',
         'Modules\\Admin\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/AuthController.php',
         'Modules\\Admin\\Http\\Controllers\\DegreeController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/DegreeController.php',
         'Modules\\Admin\\Http\\Controllers\\DegreeMapController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/DegreeMapController.php',
@@ -3402,7 +3399,6 @@ class ComposerStaticInit0e9938f4cf64e2daa22e122fa8caa0a7
         'Modules\\Admin\\Http\\Controllers\\NotificationController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/NotificationController.php',
         'Modules\\Admin\\Http\\Controllers\\ResearchDegreeMapController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/ResearchDegreeMapController.php',
         'Modules\\Admin\\Http\\Controllers\\SpecializationController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/SpecializationController.php',
-        'Modules\\Admin\\Http\\Controllers\\StudentController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/StudentController.php',
         'Modules\\Admin\\Http\\Controllers\\TranslationController' => __DIR__ . '/../..' . '/Modules/Admin/Http/Controllers/TranslationController.php',
         'Modules\\Admin\\Providers\\AdminServiceProvider' => __DIR__ . '/../..' . '/Modules/Admin/Providers/AdminServiceProvider.php',
         'Modules\\Admin\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/Modules/Admin/Providers/RouteServiceProvider.php',
@@ -5958,17 +5954,10 @@ class ComposerStaticInit0e9938f4cf64e2daa22e122fa8caa0a7
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-<<<<<<< HEAD
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6c9126b4451140f67fdde0f4147c9e33::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6c9126b4451140f67fdde0f4147c9e33::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit6c9126b4451140f67fdde0f4147c9e33::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit6c9126b4451140f67fdde0f4147c9e33::$classMap;
-=======
-            $loader->prefixLengthsPsr4 = ComposerStaticInit0e9938f4cf64e2daa22e122fa8caa0a7::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit0e9938f4cf64e2daa22e122fa8caa0a7::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit0e9938f4cf64e2daa22e122fa8caa0a7::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit0e9938f4cf64e2daa22e122fa8caa0a7::$classMap;
->>>>>>> ce8c4b7f333a25783b54252ff98cb48c3a22cc42
+            $loader->prefixLengthsPsr4 = ComposerStaticInit883dff911910dac935442c861578e42a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit883dff911910dac935442c861578e42a::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit883dff911910dac935442c861578e42a::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit883dff911910dac935442c861578e42a::$classMap;
 
         }, null, ClassLoader::class);
     }

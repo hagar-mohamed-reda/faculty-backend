@@ -4,6 +4,7 @@ namespace Modules\Admin\http\Exports;
 
 use Modules\Admin\Entities\Student;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use DB;
 
 class StudentsExport implements FromCollection
 {
@@ -13,6 +14,6 @@ class StudentsExport implements FromCollection
     public function collection()
     {
         $fields = request()->fields;
-        return Student::get($fields);
+        return DB::table('students')->get($fields);
     }
 }

@@ -89,6 +89,8 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('students/import', 'AdminStudentController@import');
     Route::get('students/export', 'AdminStudentController@export');
     Route::get('students/import-file', 'AdminStudentController@getImportTemplateFile');
+    Route::get('students/archive', 'AdminStudentController@getArchive');
+    Route::post('students/restore/{resource}', 'AdminStudentController@restore');
 
 
 });

@@ -9,7 +9,7 @@ use Modules\Admin\Entities\Student;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Admin\http\Exports\StudentsExport;
 use Modules\Admin\http\Imports\StudentsImport;
-
+use DB;
 class AdminStudentController extends Controller
 {
     public function get(){
@@ -89,7 +89,27 @@ class AdminStudentController extends Controller
         return response()->download('uploads/excel/add_student_template.xlsx');
     }
 
+    public function getArchive(){
+        return  Student::onlyTrashed()->get();
+    }
 
+    public function restore(Request $request, $resource){
+        $data = DB::table('students')->where('id', $resource)->first();
+
+        if ($data == 'null') {
+            return responseJson(0, 'tere is no data', "");
+        }
+        try {
+            $data->update(['deleted_at' => 'null']);
+
+			watch("restore student " . $data->name, "fa fa-bank-up");
+            return responseJson(1, __('done'), $data);
+
+        } catch (\Exception $th) {
+            return responseJson(0, $th->getMessage());
+        }
+
+    }
 
 
 }
