@@ -14,6 +14,21 @@ class StudentsExport implements FromCollection
     public function collection()
     {
         $fields = request()->fields;
-        return DB::table('students')->get($fields);
+        $cols = [];//$fields;
+        foreach($fields as $col) {
+            if (str_contains($col, "_id")) {
+                $colmn = str_replace("_id", "", $col);
+                $table = $colmn;
+                if ($col != "faculty_id")
+                    $table .= "s";
+
+                $colRaw = DB::raw("(select name from ".$table." where ".$table.".id = ".$col.") as " . $colmn);
+                $cols[] = $colRaw;
+            } else {
+                $cols[] = $col;
+            }
+        }
+
+        return DB::table('students')->select($cols)->get($cols);
     }
 }

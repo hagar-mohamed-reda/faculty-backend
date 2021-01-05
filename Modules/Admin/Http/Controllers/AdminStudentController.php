@@ -16,7 +16,8 @@ class AdminStudentController extends Controller
 
         $query = Student::query();
         if ($request->search)
-            $query->where('name', 'like', '%'. $request->search . '%');
+            $query->where('name', 'like', '%'. $request->search . '%')
+                ->orWhere('code', 'like', '%'.$request->search.'%');
 
         if ($request->level_id > 0)
             $query->where('level_id', $request->level_id);
@@ -29,7 +30,7 @@ class AdminStudentController extends Controller
 
         if ($request->type)
             $query->where('type', $request->type);
-			
+
         return $query->with(['level', 'division', 'department'])->latest()->paginate(10);
     }
 

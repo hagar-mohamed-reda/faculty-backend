@@ -17,20 +17,37 @@ class StudentsImport implements ToModel
     {
         try {
             $department = Department::find($row[3]);
-            $stds = Student::create([
-                'name' => $row[0],
-                'code' => $this->preNumber($row[1]),
-                'national_id' => $this->preNumber($row[2]),
-                'department_id' => $this->preNumber($row[3]),
-                'level_id' => $department->level_id,
-                'division_id' => $department->division_id,
-                'phone' => $this->preNumber($row[4]),
-                'email' => $row[5],
-                'username' => $row[2],
-                'active' => 1,
-                'type' => 'normal',
-                'password' => bcrypt($row[2]),
-            ]);
+            $stds = Student::where('code', $this->preNumber($row[1]))->first();
+            if (!$stds) {
+                $stds = Student::create([
+                    'name' => $row[0],
+                    'code' => $this->preNumber($row[1]),
+                    'national_id' => $this->preNumber($row[2]),
+                    'department_id' => $this->preNumber($row[3]),
+                    'level_id' => $department->level_id,
+                    'division_id' => $department->division_id,
+                    'phone' => $this->preNumber($row[4]),
+                    'email' => $row[5],
+                    'username' => $row[2],
+                    'active' => 1,
+                    'faculty_id' => optional($request->user)->faculty_id,
+                    'type' => 'normal',
+                    'password' => bcrypt($row[2]),
+                ]);
+            } else {
+                $stds->update([
+                    'name' => $row[0],
+                    'code' => $this->preNumber($row[1]),
+                    'national_id' => $this->preNumber($row[2]),
+                    'department_id' => $this->preNumber($row[3]),
+                    'level_id' => $department->level_id,
+                    'division_id' => $department->division_id,
+                    'phone' => $this->preNumber($row[4]),
+                    'email' => $row[5],
+                    'active' => 1,
+                    'type' => 'normal',
+                ]);
+            }
 
             return $stds;
         } catch (\Exception $th) {
