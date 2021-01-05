@@ -105,6 +105,7 @@ Route::group(['middleware' => 'api_auth'], function () {
 
     //courses start
     Route::get('courses', 'CourseController@get');
+    Route::get('courses/{resource}', 'CourseController@show');
     Route::post('courses/store', 'CourseController@store');
     Route::post('courses/update/{resource}', 'CourseController@update');
     Route::post('courses/delete/{resource}', 'CourseController@destroy');

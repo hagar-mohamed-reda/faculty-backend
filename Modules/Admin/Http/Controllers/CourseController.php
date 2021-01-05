@@ -31,6 +31,9 @@ class CourseController extends Controller
         return $query->with(['level', 'faculty', 'departments'])->latest()->paginate(10);
     }
 
+    public function show(Course $resource){
+        return $resource;
+    }
     public function store(Request $request)
     {
         $validator = validator($request->all(), [
@@ -82,15 +85,18 @@ class CourseController extends Controller
         }
         try {
 			$data = $request->all();
+            $resource->update($data);
+
+            $resource->departments()->delete();
 
             foreach ($request->divisions as $division) {
-                DB::table('course_departments')->where('course_id', $resource->id)
-                    ->update([
-                        'division_id' => $division,
-                    ]);
+                DB::table('course_departments')->insert([
+                    'course_id' => $resource->id,
+                    'faculty_id' => $data['faculty_id'],
+                    'division_id' => $division,
+                ]);
             }
 
-            $resource->update($data);
 			watch("edit course " . $resource->name, "fa fa-graduation-cap");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {

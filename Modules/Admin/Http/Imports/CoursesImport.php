@@ -20,32 +20,21 @@ class CoursesImport implements ToModel
             $cours = Course::where('code', $this->preNumber($row[1]))->first();
             if (!$cours) {
                 $cours = Course::create([
-                    'name' => $row[0],
-                    'code' => $this->preNumber($row[1]),
-                    'national_id' => $this->preNumber($row[2]),
-                    'department_id' => $this->preNumber($row[3]),
-                    'level_id' => $department->level_id,
-                    'division_id' => $department->division_id,
-                    'phone' => $this->preNumber($row[4]),
-                    'email' => $row[5],
-                    'username' => $row[2],
-                    'active' => 1,
-                    'faculty_id' => optional($request->user)->faculty_id,
-                    'type' => 'normal',
-                    'password' => bcrypt($row[2]),
+                    'code' => $row[0],
+                    'name' => $row[1],
+                    'credit_hour'=> $row[2],
+                    'final_degree' => $row[3],
+                    'level_id'=> $this->preNumber($row[4]),
+                    'description' => $row[5],
                 ]);
             } else {
                 $cours->update([
-                    'name' => $row[0],
-                    'code' => $this->preNumber($row[1]),
-                    'national_id' => $this->preNumber($row[2]),
-                    'department_id' => $this->preNumber($row[3]),
-                    'level_id' => $department->level_id,
-                    'division_id' => $department->division_id,
-                    'phone' => $this->preNumber($row[4]),
-                    'email' => $row[5],
-                    'active' => 1,
-                    'type' => 'normal',
+                    'code' => $row[0],
+                    'name' => $row[1],
+                    'credit_hour'=> $row[2],
+                    'final_degree' => $row[3],
+                    'level_id'=> $this->preNumber($row[4]),
+                    'description' => $row[5],
                 ]);
             }
 
