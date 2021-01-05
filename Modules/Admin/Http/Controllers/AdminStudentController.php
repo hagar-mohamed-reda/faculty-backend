@@ -13,7 +13,7 @@ use DB;
 class AdminStudentController extends Controller
 {
     public function get(){
-        $query = Student::latest()->paginate(10);
+        $query = Student::with(['level', 'division', 'department'])->latest()->paginate(10);
         return $query;
     }
 

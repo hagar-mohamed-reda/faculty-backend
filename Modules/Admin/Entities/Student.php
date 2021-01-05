@@ -30,4 +30,16 @@ class Student extends Model
     public function getCanDeleteAttribute() {
         return true;
     }
+
+    public function level(){
+        return $this->belongsTo(Level::class, 'level_id');
+    }
+
+    public function division(){
+        return $this->belongsTo(Division::class, 'division_id');
+    }
+
+    public function department(){
+        return $this->belongsTo(Department::class, 'department_id');
+    }
 }
