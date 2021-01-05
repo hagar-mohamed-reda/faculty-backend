@@ -51,9 +51,7 @@ class CourseController extends Controller
 				$data['faculty_id'] = optional($request->user)->faculty_id;
 			}
             $resource = Course::create($data);
-			$resource->update([
-				"division_id" => optional($resource->department)->division_id
-			]);
+			
 			watch("add course " . $resource->name, "fa fa-graduation-cap");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
