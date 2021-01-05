@@ -113,10 +113,13 @@ class AdminStudentController extends Controller
             return responseJson(0, 'tere is no data', "");
         }
         try {
-            $data->update(['deleted_at' => 'null']);
+            //$data->update(['deleted_at' => 'null']);
+            DB::table('students')
+                ->where('id', $resource)
+                ->update(['deleted_at' => null]);
 
 			watch("restore student " . $data->name, "fa fa-bank-up");
-            return responseJson(1, __('done'), $data);
+            return responseJson(1, __('done'));
 
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());

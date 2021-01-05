@@ -31,7 +31,7 @@ class StudentsImport implements ToModel
             ]);
 
             return $stds;
-        } catch (\Exception $th) {
+        } catch (Exception $th) {
             return null;
         }
     }
