@@ -12,9 +12,13 @@ use Modules\Admin\http\Imports\StudentsImport;
 use DB;
 class AdminStudentController extends Controller
 {
-    public function get(){
-        $query = Student::with(['level', 'division', 'department'])->latest()->paginate(10);
-        return $query;
+    public function get(Request $request){
+
+        $query = Student::query();
+
+
+
+        return $query->with(['level', 'division', 'department'])->latest()->paginate(10);
     }
 
     public function store(Request $request)
