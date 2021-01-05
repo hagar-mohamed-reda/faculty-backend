@@ -16,22 +16,21 @@ class DoctorsImport implements ToModel
     public function model(array $row)
     {
         try {
-            $stds = Doctor::create([
+            $doc = Doctor::create([
                 'name' => $row[0],
-                'code' => $this->preNumber($row[1]),
-                'national_id' => $this->preNumber($row[2]),
-                'department_id' => $this->preNumber($row[3]),
-                'level_id' => $department->level_id,
-                'division_id' => $department->division_id,
+                'special_id' => $this->preNumber($row[1]),
+                'degree_id' => $this->preNumber($row[2]),
+                'division_id' => $this->preNumber($row[3]),
                 'phone' => $this->preNumber($row[4]),
                 'email' => $row[5],
-                'username' => $row[2],
+                'universty_email' => $row[6],
+                'username' => $row[4],
                 'active' => 1,
                 'type' => 'normal',
-                'password' => bcrypt($row[2]),
+                'password' => bcrypt($row[4]),
             ]);
 
-            return $stds;
+            return $doc;
         } catch (\Exception $th) {
             return null;
         }

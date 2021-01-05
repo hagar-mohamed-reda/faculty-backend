@@ -37,7 +37,7 @@ class DoctorController extends Controller
         if ($request->type)
             $query->where('type', $request->type);
 
-        return $query->with(['level', 'division', 'department'])->latest()->paginate(10);
+        return $query->with(['special', 'division', 'faculty', 'degree'])->latest()->paginate(10);
     }
 
     public function store(Request $request)
