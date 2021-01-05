@@ -17,7 +17,7 @@ class CoursesImport implements ToModel
     {
         try {
             //$department = Department::find($row[3]);
-            $cours = Course::where('code', $this->preNumber($row[1]))->first();
+            $cours = Course::where('code', $this->preNumber($row[0]))->first();
             if (!$cours) {
                 $cours = Course::create([
                     'code' => $row[0],

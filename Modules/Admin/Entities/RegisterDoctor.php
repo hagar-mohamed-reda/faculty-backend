@@ -19,5 +19,17 @@ class RegisterDoctor extends Model
     public function getCanDeleteAttribute() {
         return true;
     }
+
+    public function course(){
+        return $this->belongsTo(Course::class,'course_id');
+    }
+
+    public function doctor(){
+        return $this->belongsTo(Doctor::class,'doctor_id');
+    }
+
+    public function group(){
+        return $this->belongsTo(CourseGroup::class,'group_id');
+    }
 }
 

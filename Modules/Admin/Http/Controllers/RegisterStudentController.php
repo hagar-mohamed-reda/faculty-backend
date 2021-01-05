@@ -5,75 +5,49 @@ namespace Modules\Admin\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-
+use Modules\Admin\Entities\RegisterStudent;
+use Maatwebsite\Excel\Facades\Excel;
+use Modules\Admin\http\Imports\RegisterStudentsImport;
+use DB;
 class RegisterStudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
-    {
-        return view('admin::index');
+    public function get(Request $request){
+        $query = RegisterStudent::latest()->get();
+        return $query;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        return view('admin::create');
+    public function register(Request $request){
+        $validator = validator($request->all(), [
+            "course_id" => "required",
+            "student_id" => "required",
+            "group_id" => "required",
+        ]);
+
+        if ($validator->fails()) {
+            return responseJson(0, $validator->errors()->getMessages(), "");
+        }
+        try {
+			$data = $request->all();
+
+			if (!isset($data['faculty_id'])) {
+				$data['faculty_id'] = optional($request->user)->faculty_id;
+			}
+            $resource = RegisterStudent::create($data);
+			watch("add Register Student " . $resource->name, "fa fa-registered");
+            return responseJson(1, __('done'), $resource);
+        } catch (\Exception $th) {
+            return responseJson(0, $th->getMessage());
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
+    public function import()
     {
-        //
+        Excel::import(new RegisterStudentsImport,request()->file('file'));
+
+        return responseJson(1, __('done'));
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('admin::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('admin::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function getImportTemplateFile(){
+        return response()->download('uploads/excel/student_register_file.xlsx');
     }
 }

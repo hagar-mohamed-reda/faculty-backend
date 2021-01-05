@@ -121,6 +121,17 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('course-groups/update/{resource}', 'CourseGroupsController@update');
     Route::post('course-groups/delete/{resource}', 'CourseGroupsController@destroy');
 
+    //student-registers start
+    Route::get('student-registers', 'RegisterStudentController@get');
+    Route::post('student-registers/register', 'RegisterStudentController@register');
+    Route::post('student-registers/import', 'RegisterStudentController@import');
+    Route::get('student-registers/import-file', 'RegisterStudentController@getImportTemplateFile');
+
+    //doctor-registers start
+    Route::get('doctor-registers', 'RegisterDoctorController@get');
+    Route::post('doctor-registers/register', 'RegisterDoctorController@register');
+
+
 });
 
 Route::post('login', 'AuthController@login');
