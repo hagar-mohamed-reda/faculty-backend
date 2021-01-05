@@ -16,7 +16,7 @@ class CreateDoctorsTable extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->string('username');
             $table->string('password');
             $table->unsignedBigInteger('special_id')->nullable();
@@ -24,10 +24,11 @@ class CreateDoctorsTable extends Migration
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->string('phone');
             $table->string('email');
-            $table->string('universty_email');
-            $table->boolean('active',0);
-            $table->string('sms_code');
-            $table->string('degree');
+            $table->string('universty_email')->nullable();
+            $table->boolean('active',1);
+            $table->string('sms_code')->nullable();
+            $table->integer('degree_id');
+            $table->softDeletes();
 
             $table->timestamps();
         });

@@ -92,6 +92,17 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::get('students/archive', 'AdminStudentController@getArchive');
     Route::post('students/restore/{resource}', 'AdminStudentController@restore');
 
+    //doctors start
+    Route::get('doctors', 'DoctorController@get');
+    Route::post('doctors/store', 'DoctorController@store');
+    Route::post('doctors/update/{resource}', 'DoctorController@update');
+    Route::post('doctors/delete/{resource}', 'DoctorController@destroy');
+    Route::post('doctors/import', 'DoctorController@import');
+    Route::get('doctors/export', 'DoctorController@export');
+    Route::get('doctors/import-file', 'DoctorController@getImportTemplateFile');
+    Route::get('doctors/archive', 'DoctorController@getArchive');
+    Route::post('doctors/restore/{resource}', 'DoctorController@restore');
+
 
 });
 
