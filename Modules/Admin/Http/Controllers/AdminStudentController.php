@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Modules\Admin\http\Exports\StudentsExport;
 use Modules\Admin\http\Imports\StudentsImport;
 
-class StudentController extends Controller
+class AdminStudentController extends Controller
 {
     public function get(){
         $query = Student::latest()->paginate(10);

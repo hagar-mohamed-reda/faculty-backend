@@ -82,13 +82,13 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::get("notifications", "NotificationController@getNotifications");
 
     //students start
-    Route::get('students', 'StudentController@index');
-    Route::post('students/store', 'StudentController@store');
-    Route::post('students/update/{resource}', 'StudentController@update');
-    Route::post('students/delete/{resource}', 'StudentController@destroy');
-    Route::post('students/import', 'StudentController@import');
-    Route::get('students/export', 'StudentController@export');
-    Route::get('students/import-file', 'StudentController@getImportTemplateFile');
+    Route::get('students', 'AdminStudentController@index');
+    Route::post('students/store', 'AdminStudentController@store');
+    Route::post('students/update/{resource}', 'AdminStudentController@update');
+    Route::post('students/delete/{resource}', 'AdminStudentController@destroy');
+    Route::post('students/import', 'AdminStudentController@import');
+    Route::get('students/export', 'AdminStudentController@export');
+    Route::get('students/import-file', 'AdminStudentController@getImportTemplateFile');
 
 
 });

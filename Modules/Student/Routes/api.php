@@ -12,18 +12,11 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-    
+
 Route::group(['middleware' => 'api_auth'], function () {
-    Route::prefix('')->group(function() {  
+    Route::prefix('')->group(function() {
 
-        // servicecs routes
-        Route::get('students', 'StudentController@index');
-        Route::get('students/{id}', 'StudentController@get');
-        Route::post('students/store', 'StudentController@store');
-        Route::post('students/update/{resourcc}', 'StudentController@update');
-        Route::post('students/delete/{resourcc}', 'StudentController@destroy'); 
+        
 
-        Route::post('students/enroll/{id}', 'StudentController@saveToStudents'); 
- 
     });
 });
