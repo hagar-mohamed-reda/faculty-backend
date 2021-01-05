@@ -22,7 +22,7 @@ class CourseDepartment extends Model
         return true;
     }
 
-    public function courses(){
-        return $this->belongsToMany(Course::class,'course_id');
+    public function course(){
+        return $this->belongsTo(Course::class,'course_id');
     }
 }
