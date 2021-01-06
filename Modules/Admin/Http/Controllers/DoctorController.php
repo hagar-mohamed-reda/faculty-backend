@@ -12,7 +12,7 @@ use Modules\Admin\http\Imports\DoctorsImport;
 use DB;
 class DoctorController extends Controller
 {
-    public function get(Request $request){
+    public function get(Request $request) {
 
         $query = Doctor::query();
         if ($request->search){
@@ -126,7 +126,7 @@ class DoctorController extends Controller
     }
 
     public function getArchive(){
-        return  Doctor::onlyTrashed()->with(['special', 'division', 'faculty', 'degree'])->latest()->get();
+        return  Doctor::onlyTrashed()->with(['special', 'division', 'faculty', 'degree'])->orderBy('deleted_at')->get();
     }
 
     public function restore(Request $request, $resource){
