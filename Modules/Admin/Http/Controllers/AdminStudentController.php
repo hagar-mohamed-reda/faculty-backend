@@ -112,7 +112,7 @@ class AdminStudentController extends Controller
     }
 
     public function getArchive(){
-        return  Student::onlyTrashed()->with(['level', 'division', 'department'])->get();
+        return  Student::onlyTrashed()->with(['level', 'division', 'department'])->latest()->get();
     }
 
     public function restore(Request $request, $resource){

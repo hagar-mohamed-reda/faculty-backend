@@ -126,7 +126,7 @@ class DoctorController extends Controller
     }
 
     public function getArchive(){
-        return  Doctor::onlyTrashed()->with(['level', 'division', 'department'])->get();
+        return  Doctor::onlyTrashed()->with([['special', 'division', 'faculty', 'degree']])->latest()->get();
     }
 
     public function restore(Request $request, $resource){
