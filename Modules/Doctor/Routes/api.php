@@ -34,6 +34,12 @@ Route::prefix('/doctor')->middleware(['auth:api'])->group(function(){
     Route::post('questions/store', 'QuestionController@store');
     Route::post('questions/update/{resource}', 'QuestionController@update');
     Route::post('questions/delete/{resource}', 'QuestionController@destroy');
+
+    //questions start
+    Route::get('question_categorys', 'QuestionCategoryController@get');
+    Route::post('question_categorys/store', 'QuestionCategoryController@store');
+    Route::post('question_categorys/update/{resource}', 'QuestionCategoryController@update');
+    Route::post('question_categorys/delete/{resource}', 'QuestionCategoryController@destroy');
 });
 
 Route::post('login', 'AuthController@login');
