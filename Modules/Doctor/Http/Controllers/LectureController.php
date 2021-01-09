@@ -12,6 +12,9 @@ use Auth;
 class LectureController extends Controller
 {
 
+    public static $fileSize = 5000;
+    public static $videoSize = 10000;
+
     public function get(Request $request) {
         $query = Lecture::where('doctor_id', Auth::user()->id);
 
@@ -21,9 +24,8 @@ class LectureController extends Controller
         return $query->latest()->get();
     }
 
+
     public function store(Request $request) {
-        $fileSize = 5000;
-        $videoSize = 10000;
 
         $validator = validator($request->all(), [
             "name" => "required",
@@ -31,9 +33,9 @@ class LectureController extends Controller
             "active" => "required",
             "date" => "required",
             "course_id" => "required",
-            "file1"     => "max:". $fileSize,
-            "file2"     => "max:". $fileSize,
-            "video"     => "max:". $videoSize,
+            "file1"     => "max:". self::$filesize,
+            "file2"     => "max:". self::$fileSize,
+            "video"     => "max:". self::$videoSize,
         ]);
 
 
@@ -98,8 +100,6 @@ class LectureController extends Controller
     }
 
     public function update(Request $request, Lecture $resource) {
-        $fileSize = 5000;
-        $videoSize = 10000;
 
         $validator = validator($request->all(), [
             "name" => "required",
@@ -107,9 +107,9 @@ class LectureController extends Controller
             "active" => "required",
             "date" => "required",
             "course_id" => "required",
-            "file1"     => "max:". $fileSize,
-            "file2"     => "max:". $fileSize,
-            "video"     => "max:". $videoSize,
+            "file1"     => "max:". self::$fileSize,
+            "file2"     => "max:". self::$fileSize,
+            "video"     => "max:". self::$videoSize,
         ]);
 
         if ($validator->fails()) {
