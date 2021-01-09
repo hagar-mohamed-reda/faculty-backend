@@ -26,6 +26,7 @@ Route::prefix('/doctor')->middleware(['auth:api'])->group(function(){
 
     //lectures start
     Route::get('lectures', 'LectureController@get');
+    Route::get('lectures/{resource}', 'LectureController@load');
     Route::post('lectures/store', 'LectureController@store');
     Route::post('lectures/update/{resource}', 'LectureController@update');
     Route::post('lectures/delete/{resource}', 'LectureController@destroy');
