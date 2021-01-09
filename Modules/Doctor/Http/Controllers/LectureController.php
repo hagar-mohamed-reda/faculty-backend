@@ -26,6 +26,10 @@ class LectureController extends Controller
         return $query->latest()->get();
     }
 
+    public function load(Request $request,  $resource) {
+        return Lecture::find($resource);
+    }
+
 
     public function store(Request $request) {
 
