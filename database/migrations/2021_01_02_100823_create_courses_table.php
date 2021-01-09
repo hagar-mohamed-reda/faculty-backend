@@ -21,7 +21,7 @@ class CreateCoursesTable extends Migration
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->string('code');
             $table->integer('credit_hour');
-            $table->string('description');
+            $table->longText('description')->nullable();
             $table->integer('final_degree');
             $table->boolean('active',0);
             $table->softDeletes();
