@@ -58,7 +58,7 @@ class LectureController extends Controller
                 $file1 = $request->file('file1');
                 $file1name = time() . '.' . $file1->getClientOriginalExtension();
 
-                $request['file1'] = $file1name;
+                //$request['file1'] = $file1name;
 
                 $destinationPath = public_path('uploads/lessons');
                 $file1->move($destinationPath, $file1name);
@@ -68,7 +68,7 @@ class LectureController extends Controller
             if ($request->hasFile('file2')) {
                 $file2 = $request->file('file2');
                 $file2name = time() . '.' . $file2->getClientOriginalExtension();
-                $request['file2'] = $file2name;
+                //$request['file2'] = $file2name;
 
                 $destinationPath = public_path('uploads/lessons');
                 $file2->move($destinationPath, $file2name);
@@ -80,7 +80,7 @@ class LectureController extends Controller
                 $video = $request->file('video');
                 $videoname = time() . '.' . $video->getClientOriginalExtension();
 
-                $request['video'] = $videoname;
+                //$request['video'] = $videoname;
 
                 $destinationPath = public_path('uploads/lessons');
                 $video->move($destinationPath, $videoname);
