@@ -7,7 +7,7 @@ if (!function_exists('uploadImg')) {
         if ($file) { 
             
             $extension = $file->getClientOriginalExtension();
-            $filename = time() . '' . rand(11111, 99999) . '.' . $extension; // renameing image
+            $filename = $folder . time() . '' . rand(11111, 99999) . '.' . $extension; // renameing image
             $dest = public_path('/' . $folder);
             $file->move($dest, $filename);
 
@@ -17,6 +17,9 @@ if (!function_exists('uploadImg')) {
         if ($oldPath) {
             if (file_exists(public_path($oldPath))) {
                 unlink(public_path($oldPath));
+            }
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
             }
         }
         return $filename;

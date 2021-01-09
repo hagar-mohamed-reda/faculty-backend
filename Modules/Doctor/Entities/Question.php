@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     protected $table = 'questions';
+    
+    public static $prefix = "/uploads/questions/";
+    
     protected $fillable = [
         'text',
         'question_type_id',

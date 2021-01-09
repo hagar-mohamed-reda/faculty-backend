@@ -28,6 +28,12 @@ Route::prefix('/doctor')->middleware(['auth:api'])->group(function(){
     Route::post('lectures/store', 'LectureController@store');
     Route::post('lectures/update/{resource}', 'LectureController@update');
     Route::post('lectures/delete/{resource}', 'LectureController@destroy');
+
+    //questions start
+    Route::get('questions', 'QuestionController@get');
+    Route::post('questions/store', 'QuestionController@store');
+    Route::post('questions/update/{resource}', 'QuestionController@update');
+    Route::post('questions/delete/{resource}', 'QuestionController@destroy');
 });
 
 Route::post('login', 'AuthController@login');

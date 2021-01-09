@@ -9,11 +9,25 @@ use App\AppSetting;
 use Modules\Doctor\Entities\Question;
 use Auth;
 
+
 class QuestionController extends Controller {
 
     public function get(Request $request) {
-        $query = Question::where('doctor_id', Auth::user()->id)->latest()->get();
-        return $query;
+        $query = Question::where('doctor_id', Auth::user()->id);
+        
+        if ($request->question_type_id > 0) 
+            $query->where('question_type_id', $request->question_type_id);
+        
+        if ($request->question_level_id > 0) 
+            $query->where('question_level_id', $request->question_level_id);
+        
+        if ($request->question_category_id > 0) 
+            $query->where('question_category_id', $request->question_category_id);
+         
+        if ($request->course_id > 0) 
+            $query->where('course_id', $request->course_id);
+        
+        return $query->latest()->get(); 
     }
 
     public function store(Request $request) {
@@ -29,26 +43,23 @@ class QuestionController extends Controller {
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
 
-        if ($request->hasFile('file1')) {
-            $file1 = $request->file('file1');
-            $file1name = time() . '.' . $file1->getClientOriginalExtension();
-
-            $request['file1'] = $file1name;
-
-            $destinationPath = public_path('uploads/lessons');
-            $file1->move($destinationPath, $file1name);
-        }
-
         try {
-            $data = $request->all();
-            $data['academic_year_id'] = optional(AppSetting::getCurrentAcademicYear())->id;
-            $data['term_id'] = optional(AppSetting::getCurrentTerm())->id;
-
+            $data = $request->all(); 
+            $data['doctor_id'] = optional($request->user)->id;
             if (!isset($data['faculty_id'])) {
                 $data['faculty_id'] = optional($request->user)->faculty_id; 
             }  
-            $resource = Question::create($data);
-            watch("add lecture " . $resource->name, "fa fa-book");
+            $resource = Question::create($data); 
+            
+            uploadImg($request->file('image'), Question::$prefix, function($filename) use ($resource) {
+                $resource->update([
+                    "image" => $filename
+                ]);
+            }, public_path($resource->image));
+
+            
+            
+            watch("add question " . $resource->text, "fa fa-question");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
@@ -57,19 +68,34 @@ class QuestionController extends Controller {
 
     public function update(Request $request, Question $resource) {
         $validator = validator($request->all(), [
-            "name" => "required",
-            "file1" => "required",
-            "active" => "required",
-            "date" => "required",
-            "course_id" => "required",
+            "question_type_id" => "required",
+            "question_level_id" => "required",
+            "question_category_id" => "required",
+            "course_id" => "required"
         ]);
+
 
         if ($validator->fails()) {
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
+
         try {
-            $resource->update($request->all());
-            watch("edit lecture " . $resource->name, "fa fa-book");
+            $data = $request->all(); 
+            $data['doctor_id'] = optional($request->user)->id;
+            if (!isset($data['faculty_id'])) {
+                $data['faculty_id'] = optional($request->user)->faculty_id; 
+            }  
+            $resource->update($data); 
+            
+            uploadImg($request->file('image'), Question::$prefix, function($filename) use ($resource) {
+                $resource->update([
+                    "image" => $filename
+                ]);
+            }, public_path($resource->image));
+
+            
+            
+            watch("edit question " . $resource->text, "fa fa-question");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
@@ -78,7 +104,7 @@ class QuestionController extends Controller {
 
     public function destroy(Question $resource) {
         try {
-            watch("remove lecture " . $resource->name, "fa fa-book");
+            watch("remove question " . $resource->text, "fa fa-question");
             $resource->delete();
             return responseJson(1, __('done'));
         } catch (\Exception $th) {
