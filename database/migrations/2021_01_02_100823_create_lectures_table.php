@@ -16,18 +16,18 @@ class CreateLecturesTable extends Migration
         Schema::create('lectures', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('description');
-            $table->string('file1');
-            $table->string('file2');
-            $table->string('video');
-            $table->string('youtube_url');
+            $table->string('description')->nullable();
+            $table->string('file1')->nullable();
+            $table->string('file2')->nullable();
+            $table->string('video')->nullable();
+            $table->string('youtube_url')->nullable();
             $table->boolean('active',0);
             $table->date('date');
-            $table->unsignedBigInteger('doctor_id')->nullable();
-            $table->unsignedBigInteger('course_id')->nullable();
-            $table->unsignedBigInteger('term_id')->nullable();
-            $table->unsignedBigInteger('academic_year_id')->nullable();
-            $table->unsignedBigInteger('faculty_id')->nullable();
+            $table->unsignedBigInteger('doctor_id');
+            $table->unsignedBigInteger('course_id');
+            $table->unsignedBigInteger('term_id');
+            $table->unsignedBigInteger('academic_year_id');
+            $table->unsignedBigInteger('faculty_id');
 
             $table->timestamps();
         });

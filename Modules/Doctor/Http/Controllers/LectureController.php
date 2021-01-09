@@ -31,6 +31,7 @@ class LectureController extends Controller
         $validator = validator($request->all(), [
             "name" => "required",
             "file1" => "mimes:". self::$FILETYPE,
+            "file2" => "mimes:". self::$FILETYPE,
             "active" => "required",
             "date" => "required",
             "course_id" => "required",
@@ -104,7 +105,8 @@ class LectureController extends Controller
 
         $validator = validator($request->all(), [
             "name" => "required",
-            "file1" => "required",
+            "file1" => "mimes:". self::$FILETYPE,
+            "file2" => "mimes:". self::$FILETYPE,
             "active" => "required",
             "date" => "required",
             "course_id" => "required",
