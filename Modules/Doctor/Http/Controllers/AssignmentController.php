@@ -5,25 +5,25 @@ namespace Modules\Doctor\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Doctor\Entities\Lecture;
+use Modules\Doctor\Entities\Assignment;
 use App\AppSetting;
 use Auth;
-
-class LectureController extends Controller
+class AssignmentController extends Controller
 {
 
     public function get(Request $request) {
-        $query = Lecture::where('doctor_id', Auth::user()->id)->latest()->get();
+        $query = Assignment::where('doctor_id', Auth::user()->id)->latest()->get();
         return $query;
     }
 
     public function store(Request $request) {
         $validator = validator($request->all(), [
             "name" => "required",
-            "file1" => "required",
-            "active" => "required",
-            "date" => "required",
+            "file" => "required",
+            "date_from" => "required",
+            "date_to" => "required",
             "course_id" => "required",
+            "lecture_id" => "required",
         ]);
 
 
@@ -40,60 +40,38 @@ class LectureController extends Controller
                 $data['faculty_id'] = optional($request->user)->faculty_id;
                 //$data['doctor_id'] = optional($request->user)->id;
             }
-            $resource = Lecture::create($data);
+            $resource = Assignment::create($data);
 
             // upload code
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $filename = time() . '.' . $file->getClientOriginalExtension();
 
-            if ($request->hasFile('file1')) {
-                $file1 = $request->file('file1');
-                $file1name = time() . '.' . $file1->getClientOriginalExtension();
+                $request['file'] = $filename;
 
-                $request['file1'] = $file1name;
-
-                $destinationPath = public_path('uploads/lessons');
-                $file1->move($destinationPath, $file1name);
-                $resouce->file1 = $file1name;
+                $destinationPath = public_path('uploads/assignments');
+                $file->move($destinationPath, $filename);
+                $resouce->file = $filename;
             }
 
-            if ($request->hasFile('file2')) {
-                $file2 = $request->file('file2');
-                $file2name = time() . '.' . $file2->getClientOriginalExtension();
-                $request['file2'] = $file2name;
-
-                $destinationPath = public_path('uploads/lessons');
-                $file2->move($destinationPath, $file2name);
-                $resouce->file2 = $file2name;
-
-            }
-
-            if ($request->hasFile('video')) {
-                $video = $request->file('video');
-                $videoname = time() . '.' . $video->getClientOriginalExtension();
-
-                $request['video'] = $videoname;
-
-                $destinationPath = public_path('uploads/lessons');
-                $video->move($destinationPath, $videoname);
-                $resouce->video = $videoname;
-
-            }
 
             // end of uplaod code
             $resource->update();
-            watch("add lecture " . $resource->name, "fa fa-book");
+            watch("add assignment " . $resource->name, "fa fa-calender");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
         }
     }
 
-    public function update(Request $request, Lecture $resource) {
+    public function update(Request $request, Assignment $resource) {
         $validator = validator($request->all(), [
             "name" => "required",
-            "file1" => "required",
-            "active" => "required",
-            "date" => "required",
+            "file" => "required",
+            "date_from" => "required",
+            "date_to" => "required",
             "course_id" => "required",
+            "lecture_id" => "required",
         ]);
 
         if ($validator->fails()) {
@@ -101,16 +79,16 @@ class LectureController extends Controller
         }
         try {
             $resource->update($request->all());
-            watch("edit lecture " . $resource->name, "fa fa-book");
+            watch("edit assignment " . $resource->name, "fa fa-calender");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
         }
     }
 
-    public function destroy(Lecture $resource) {
+    public function destroy(Assignment $resource) {
         try {
-            watch("remove lecture " . $resource->name, "fa fa-book");
+            watch("remove assignment " . $resource->name, "fa fa-calender");
             $resource->delete();
             return responseJson(1, __('done'));
         } catch (\Exception $th) {
