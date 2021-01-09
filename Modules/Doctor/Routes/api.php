@@ -28,5 +28,8 @@ Route::prefix('/doctor')->middleware(['auth:api'])->group(function(){
     Route::post('lectures/store', 'LectureController@store');
     Route::post('lectures/update/{resource}', 'LectureController@update');
     Route::post('lectures/delete/{resource}', 'LectureController@destroy');
-
 });
+
+Route::post('login', 'AuthController@login');
+Route::post('forget-password', 'AuthController@forgetPassword');
+
