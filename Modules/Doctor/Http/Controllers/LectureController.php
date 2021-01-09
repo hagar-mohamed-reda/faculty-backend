@@ -124,6 +124,15 @@ class LectureController extends Controller
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
         try {
+            if (file_exists($resource->file1)) {
+                unlink(public_path('uploads/lessons'));
+            }
+            if (file_exists($resource->file2)) {
+                unlink(public_path('uploads/lessons'));
+            }
+            if (file_exists($resource->video)) {
+                unlink(public_path('uploads/lessons'));
+            }
             $resource->update($request->all());
             watch("edit lecture " . $resource->name, "fa fa-book");
             return responseJson(1, __('done'), $resource);
