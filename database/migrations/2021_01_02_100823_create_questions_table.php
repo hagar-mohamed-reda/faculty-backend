@@ -23,7 +23,8 @@ class CreateQuestionsTable extends Migration
             $table->unsignedBigInteger('course_id')->nullable();
             $table->boolean('active',0);
             $table->boolean('is_shared',0);
-            $table->string('notes');
+            $table->string('notes')->nullable();
+            $table->string('image')->nullable();
 
             $table->timestamps();
         });
