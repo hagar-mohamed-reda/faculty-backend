@@ -26,6 +26,7 @@ class CreateAssignmentsTable extends Migration
             $table->unsignedBigInteger('academic_year_id')->nullable();
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->integer('degree');
+            $table->longText('description')->nullable();
 
             $table->timestamps();
             /*
