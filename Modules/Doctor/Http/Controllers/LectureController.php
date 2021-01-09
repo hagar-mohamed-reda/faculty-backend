@@ -23,37 +23,8 @@ class LectureController extends Controller {
             "active" => "required",
             "date" => "required",
             "course_id" => "required",
-            "doctor_id" => optional($request->user)->id,
         ]);
 
-        if ($request->hasFile('file1')) {
-            $file1 = $request->file('file1');
-            $file1name = time() . '.' . $file1->getClientOriginalExtension();
-
-            $request['file1'] = $file1name;
-
-            $destinationPath = public_path('uploads/lessons');
-            $file1->move($destinationPath, $file1name);
-        }
-
-        if ($request->hasFile('file2')) {
-            $file2 = $request->file('file2');
-            $file2name = time() . '.' . $file2->getClientOriginalExtension();
-            $request['file2'] = $file2name;
-
-            $destinationPath = public_path('uploads/lessons');
-            $file2->move($destinationPath, $file2name);
-        }
-
-        if ($request->hasFile('video')) {
-            $video = $request->file('video');
-            $videoname = time() . '.' . $video->getClientOriginalExtension();
-
-            $request['video'] = $videoname;
-
-            $destinationPath = public_path('uploads/lessons');
-            $video->move($destinationPath, $videoname);
-        }
 
         if ($validator->fails()) {
             return responseJson(0, $validator->errors()->getMessages(), "");
@@ -62,12 +33,52 @@ class LectureController extends Controller {
             $data = $request->all();
             $data['academic_year_id'] = optional(AppSetting::getCurrentAcademicYear())->id;
             $data['term_id'] = optional(AppSetting::getCurrentTerm())->id;
+            $data['doctor_id'] = optional($request->user)->id;
 
             if (!isset($data['faculty_id'])) {
                 $data['faculty_id'] = optional($request->user)->faculty_id;
                 //$data['doctor_id'] = optional($request->user)->id;
             }
             $resource = Lecture::create($data);
+
+            // upload code
+
+            if ($request->hasFile('file1')) {
+                $file1 = $request->file('file1');
+                $file1name = time() . '.' . $file1->getClientOriginalExtension();
+
+                $request['file1'] = $file1name;
+
+                $destinationPath = public_path('uploads/lessons');
+                $file1->move($destinationPath, $file1name);
+                $resouce->file1 = $file1name;
+            }
+
+            if ($request->hasFile('file2')) {
+                $file2 = $request->file('file2');
+                $file2name = time() . '.' . $file2->getClientOriginalExtension();
+                $request['file2'] = $file2name;
+
+                $destinationPath = public_path('uploads/lessons');
+                $file2->move($destinationPath, $file2name);
+                $resouce->file2 = $file2name;
+
+            }
+
+            if ($request->hasFile('video')) {
+                $video = $request->file('video');
+                $videoname = time() . '.' . $video->getClientOriginalExtension();
+
+                $request['video'] = $videoname;
+
+                $destinationPath = public_path('uploads/lessons');
+                $video->move($destinationPath, $videoname);
+                $resouce->video = $videoname;
+
+            }
+
+            // end of uplaod code
+            $resource->update();
             watch("add lecture " . $resource->name, "fa fa-book");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
