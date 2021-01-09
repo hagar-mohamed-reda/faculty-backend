@@ -14,6 +14,7 @@ class LectureController extends Controller
 
     public static $FILESIZE = 5000;
     public static $VIDEOSIZE = 10000;
+    public static $FILETYPE = ['gif','jpg','png','jpeg','pdf','doc','xml','docx','GIF','JPG','PNG','JPEG','PDF','DOC','XML','DOCX','xls','xlsx','txt','ppt','csv'];
 
     public function get(Request $request) {
         $query = Lecture::where('doctor_id', Auth::user()->id);
@@ -29,7 +30,7 @@ class LectureController extends Controller
 
         $validator = validator($request->all(), [
             "name" => "required",
-            "file1" => "required",
+            "file1" => "mimes:". self::$FILETYPE,
             "active" => "required",
             "date" => "required",
             "course_id" => "required",
