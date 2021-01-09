@@ -39,7 +39,7 @@ class QuestionCategoryController extends Controller {
             }  
             $resource = QuestionCategory::create($data); 
              
-            watch("add question category " . $resource->text, "fa fa-question category");
+            watch("add question category " . $resource->text, "fa fa-th-list");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
@@ -65,7 +65,7 @@ class QuestionCategoryController extends Controller {
             }  
             $resource->update($data); 
              
-            watch("edit question category " . $resource->text, "fa fa-question category");
+            watch("edit question category " . $resource->text, "fa fa-th-list");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
@@ -74,7 +74,7 @@ class QuestionCategoryController extends Controller {
 
     public function destroy(QuestionCategory $resource) {
         try {
-            watch("remove question category " . $resource->text, "fa fa-question category");
+            watch("remove question category " . $resource->text, "fa fa-th-list");
             $resource->delete();
             return responseJson(1, __('done'));
         } catch (\Exception $th) {
