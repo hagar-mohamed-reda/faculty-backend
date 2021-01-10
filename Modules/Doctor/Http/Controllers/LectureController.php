@@ -9,7 +9,8 @@ use Modules\Doctor\Entities\Lecture;
 use App\AppSetting;
 use Auth;
 
-class LectureController extends Controller {
+class LectureController extends Controller
+{
 
     public function get(Request $request) {
         $query = Lecture::where('doctor_id', Auth::user()->id);
