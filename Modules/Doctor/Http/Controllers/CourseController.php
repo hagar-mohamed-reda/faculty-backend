@@ -28,4 +28,9 @@ class CourseController extends Controller
 
         return $query->with(['level', 'faculty', 'departments'])->latest()->paginate(10);
     }
+    
+    public function load(Request $request,  $resource) {
+        return Course::with(['lectures', 'level'])->find($resource);
+    }
+
 }

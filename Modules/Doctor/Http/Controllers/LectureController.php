@@ -12,8 +12,12 @@ use Auth;
 class LectureController extends Controller {
 
     public function get(Request $request) {
-        $query = Lecture::where('doctor_id', Auth::user()->id)->latest()->get();
-        return $query;
+        $query = Lecture::where('doctor_id', Auth::user()->id);
+        
+        if ($request->course_id > 0)
+            $query->where('course_id', $request->course_id);
+        
+        return $query->latest()->get(); 
     }
 
     public function store(Request $request) {

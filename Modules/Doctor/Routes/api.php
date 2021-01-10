@@ -22,6 +22,7 @@ Route::prefix('/doctor')->middleware(['auth:api'])->group(function(){
 
 
     Route::get('courses', 'CourseController@get');
+    Route::get('courses/{resource}', 'CourseController@load');
 
     //lectures start
     Route::get('lectures', 'LectureController@get');
