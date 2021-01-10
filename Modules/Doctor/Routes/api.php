@@ -32,10 +32,10 @@ Route::prefix('/doctor')->middleware(['auth:api'])->group(function(){
     Route::post('lectures/delete/{resource}', 'LectureController@destroy');
 
     //assignments start
-    Route::get('assignments', 'AssignmentsController@get');
-    Route::post('assignments/store', 'AssignmentsController@store');
-    Route::post('assignments/update/{resource}', 'AssignmentsController@update');
-    Route::post('assignments/delete/{resource}', 'AssignmentsController@destroy');
+    Route::get('assignments', 'AssignmentController@get');
+    Route::post('assignments/store', 'AssignmentController@store');
+    Route::post('assignments/update/{resource}', 'AssignmentController@update');
+    Route::post('assignments/delete/{resource}', 'AssignmentController@destroy');
 
     //questions start
     Route::get('questions', 'QuestionController@get');
