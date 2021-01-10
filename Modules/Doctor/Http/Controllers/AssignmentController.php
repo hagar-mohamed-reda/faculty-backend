@@ -42,21 +42,11 @@ class AssignmentController extends Controller
             }
             $resource = Assignment::create($data);
 
-            // upload code
-            if ($request->hasFile('file')) {
-                $file = $request->file('file');
-                $filename = time() . '.' . $file->getClientOriginalExtension();
+            // upload file 
+            uploadImg($request->file("file"), "uploads/tasks/", function($filename) use ($resource) { 
+                $resource->update(["file" => $filename]); 
+            }, $resource->file);
 
-                $request['file'] = $filename;
-
-                $destinationPath = public_path('uploads/assignments');
-                $file->move($destinationPath, $filename);
-                $resouce->file = $filename;
-            }
-
-
-            // end of uplaod code
-            $resource->update();
             watch("add assignment " . $resource->name, "fa fa-calender");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
@@ -78,7 +68,16 @@ class AssignmentController extends Controller
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
         try {
-            $resource->update($request->all());
+            $data = $request->all();
+            if (isset($data['file']))
+                unset($data['file']);
+            
+            $resource->update($data);
+            // upload file 
+            uploadImg($request->file("file"), "/uploads/assigments/", function($filename) use ($resource) { 
+                $resource->update(["file" => $filename]); 
+            }, $resource->file);
+            
             watch("edit assignment " . $resource->name, "fa fa-calender");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
