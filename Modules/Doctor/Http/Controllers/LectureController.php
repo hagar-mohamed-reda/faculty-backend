@@ -18,7 +18,7 @@ class LectureController extends Controller
     public static $VIDEOTYPE = "mp4,3gp,mp3";
 
     public function get(Request $request) {
-        $query = Lecture::where('doctor_id', Auth::user()->id);
+        $query = Lecture::where('doctor_id', $request->user->id);
 
         if ($request->course_id > 0)
             $query->where('course_id', $request->course_id);

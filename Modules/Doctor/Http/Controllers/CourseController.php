@@ -12,7 +12,7 @@ class CourseController extends Controller
 {
     public function get(Request $request){
         $doctorCourse = [];
-        $doctorCourse =  RegisterDoctor::where('doctor_id', Auth::user()->id)->pluck('course_id')->toArray();
+        $doctorCourse =  RegisterDoctor::where('doctor_id', $request->user->id)->pluck('course_id')->toArray();
 
         $query = Course::query();
 

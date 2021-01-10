@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/doctor', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('/doctor')->middleware(['auth:api'])->group(function(){
+Route::prefix('/doctor')->middleware(['doctor_auth'])->group(function(){
 
 
     Route::get('courses', 'CourseController@get');

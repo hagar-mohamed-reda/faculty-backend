@@ -12,7 +12,7 @@ class AssignmentController extends Controller
 {
 
     public function get(Request $request) {
-        $query = Assignment::where('doctor_id', Auth::user()->id)->latest()->get();
+        $query = Assignment::where('doctor_id', $request->user->id)->latest()->get();
         return $query;
     }
 
