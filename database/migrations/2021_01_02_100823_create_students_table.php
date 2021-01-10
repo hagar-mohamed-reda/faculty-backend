@@ -30,6 +30,8 @@ class CreateStudentsTable extends Migration
             $table->boolean('active',1);
             $table->string('sms_code')->nullable();
             $table->enum('type', ['normal', 'graduated'],'normal');
+            $table->longText('api_token');
+
             $table->softDeletes();
             $table->timestamps();
         });

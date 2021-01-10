@@ -28,6 +28,7 @@ class CreateDoctorsTable extends Migration
             $table->boolean('active',1);
             $table->string('sms_code')->nullable();
             $table->integer('degree_id');
+            $table->longText('api_token');
             $table->softDeletes();
 
             $table->timestamps();
