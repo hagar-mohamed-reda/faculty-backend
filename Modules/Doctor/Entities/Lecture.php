@@ -30,15 +30,15 @@ class Lecture extends Model
     }
     
     public function getFile1UrlAttribute() {
-        return url('/uploads/lessons') . "/" . $this->file1;
+        return url($this->file1);
     }
     
     public function getFile2UrlAttribute() {
-        return url('/uploads/lessons') . "/" . $this->file2;
+        return url($this->file2);
     }
     
     public function getVideoUrlAttribute() {
-        return url('/uploads/lessons') . "/" . $this->video;
+        return url($this->video);
     }
 }
 

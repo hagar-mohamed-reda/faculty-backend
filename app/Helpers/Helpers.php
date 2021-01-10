@@ -5,22 +5,21 @@ if (!function_exists('uploadImg')) {
 
         $filename = "";
         if ($file) { 
+            // 
+            if ($oldPath) {
+                if (file_exists(public_path($oldPath))) {
+                    unlink(public_path($oldPath));
+                }
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
+            }
             
             $extension = $file->getClientOriginalExtension();
             $filename = $folder . time() . '' . rand(11111, 99999) . '.' . $extension; // renameing image
             $dest = public_path('/' . $folder);
             $file->move($dest, $filename);
-
             $action($filename);
-        }
-         
-        if ($oldPath) {
-            if (file_exists(public_path($oldPath))) {
-                unlink(public_path($oldPath));
-            }
-            if (file_exists($oldPath)) {
-                unlink($oldPath);
-            }
         }
         return $filename;
     }
