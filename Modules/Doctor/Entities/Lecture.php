@@ -29,16 +29,16 @@ class Lecture extends Model
         return true;
     }
     
-    public function getFile1UrlAttribute() {
-        return url($this->file1);
+    public function getFile1UrlAttribute() { 
+        return ($this->file1)? url($this->file1) : null;
     }
     
     public function getFile2UrlAttribute() {
-        return url($this->file2);
+        return ($this->file2)? url($this->file2) : null;
     }
     
     public function getVideoUrlAttribute() {
-        return url($this->video);
+        return ($this->video)? url($this->video) : null;
     }
 }
 
