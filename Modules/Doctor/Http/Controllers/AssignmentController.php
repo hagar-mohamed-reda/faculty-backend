@@ -10,6 +10,8 @@ use App\AppSetting;
 use Auth;
 class AssignmentController extends Controller
 {
+    public static $FILESIZE = 5000;
+    public static $FILETYPE = "gif,jpg,png,jpeg,pdf,doc,xml,docx,GIF,JPG,PNG,JPEG,PDF,DOC,XML,DOCX,xls,xlsx,txt,ppt,csv";
 
     public function get(Request $request) {
         $query = Assignment::with(['course', 'lecture', 'doctor'])->where('doctor_id', $request->user->id);
@@ -31,6 +33,7 @@ class AssignmentController extends Controller
             "date_to" => "required",
             "course_id" => "required",
             "lecture_id" => "required",
+            "file"      => "max:". self::$FILESIZE . "|mimes:". self::$FILETYPE,
         ]);
 
 
@@ -49,9 +52,9 @@ class AssignmentController extends Controller
             }
             $resource = Assignment::create($data);
 
-            // upload file 
-            uploadImg($request->file("file"), "uploads/tasks/", function($filename) use ($resource) { 
-                $resource->update(["file" => $filename]); 
+            // upload file
+            uploadImg($request->file("file"), "uploads/tasks/", function($filename) use ($resource) {
+                $resource->update(["file" => $filename]);
             }, $resource->file);
 
             watch("add assignment " . $resource->name, "fa fa-calender");
@@ -69,6 +72,7 @@ class AssignmentController extends Controller
             "date_to" => "required",
             "course_id" => "required",
             "lecture_id" => "required",
+            "file"      => "max:". self::$FILESIZE . "|mimes:". self::$FILETYPE,
         ]);
 
         if ($validator->fails()) {
@@ -78,13 +82,13 @@ class AssignmentController extends Controller
             $data = $request->all();
             if (isset($data['file']))
                 unset($data['file']);
-            
+
             $resource->update($data);
-            // upload file 
-            uploadImg($request->file("file"), "/uploads/assigments/", function($filename) use ($resource) { 
-                $resource->update(["file" => $filename]); 
+            // upload file
+            uploadImg($request->file("file"), "/uploads/assigments/", function($filename) use ($resource) {
+                $resource->update(["file" => $filename]);
             }, $resource->file);
-            
+
             watch("edit assignment " . $resource->name, "fa fa-calender");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
