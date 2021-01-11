@@ -16,6 +16,7 @@ class CreateQuestionCategoryTable extends Migration
         Schema::create('question_category', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->longText('notes')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->unsignedBigInteger('course_id')->nullable();
