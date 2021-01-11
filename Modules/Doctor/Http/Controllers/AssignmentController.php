@@ -14,8 +14,21 @@ class AssignmentController extends Controller
     public static $FILETYPE = "gif,jpg,png,jpeg,pdf,doc,xml,docx,GIF,JPG,PNG,JPEG,PDF,DOC,XML,DOCX,xls,xlsx,txt,ppt,csv";
 
     public function get(Request $request) {
-        $query = Assignment::where('doctor_id', $request->user->id)->latest()->get();
-        return $query;
+        $query = Assignment::with(['course', 'lecture', 'doctor'])->where('doctor_id', $request->user->id);
+        
+        if ($request->search) {
+            $query->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('description', 'like', '%'.$request->search.'%')
+                    ->orWhere('degree', 'like', '%'.$request->search.'%');
+        }
+        
+        if ($request->course_id > 0)
+            $query->where('course_id', $request->course_id);
+        
+        if ($request->lecture_id > 0)
+            $query->where('lecture_id', $request->lecture_id);
+        
+        return $query->latest()->paginate(60); 
     }
 
     public function store(Request $request) {
@@ -46,13 +59,13 @@ class AssignmentController extends Controller
             $resource = Assignment::create($data);
 
             // upload file
-            uploadImg($request->file("file"), "uploads/tasks/", function($filename) use ($resource) {
+            uploadImg($request->file("file"), "uploads/assigments/", function($filename) use ($resource) {
                 $resource->update(["file" => $filename]);
             }, $resource->file);
 
             watch("add assignment " . $resource->name, "fa fa-calender");
             return responseJson(1, __('done'), $resource);
-        } catch (\Exception $th) {
+        } catch (Exception $th) {
             return responseJson(0, $th->getMessage());
         }
     }
