@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use DB;
 class QuestionLevelSeeder extends Seeder
 {
     private $data = [
