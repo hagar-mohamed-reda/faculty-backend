@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use DB;
+use Illuminate\Support\Facades\DB;
+
 class QuestionLevelSeeder extends Seeder
 {
     private $data = [
@@ -12,12 +13,8 @@ class QuestionLevelSeeder extends Seeder
 
     public function run()
     {
-        foreach($this->data as $item) {
-            DB::table('question_levels')->insert([
-                'id' => $item['id'],
-                'name' => $item['name'],
-                'icon' => $item['icon']
-            ]);
-        }
+        DB::table('question_levels')->truncate();
+        DB::table('question_levels')->insert($this->data);
+
     }
 }

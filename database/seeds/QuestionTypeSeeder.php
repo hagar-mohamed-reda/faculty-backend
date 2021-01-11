@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use DB;
+use Illuminate\Support\Facades\DB;
 class QuestionTypeSeeder extends Seeder
 {
 
@@ -15,12 +15,8 @@ class QuestionTypeSeeder extends Seeder
 
     public function run()
     {
-        foreach($this->data as $item) {
-            DB::table('question_types')->insert([
-                'id' => $item['id'],
-                'name' => $item['name'],
-                'icon' => $item['icon']
-            ]);
-        }
+        DB::table('question_types')->truncate();
+
+        DB::table('question_types')->insert($this->data);
     }
 }
