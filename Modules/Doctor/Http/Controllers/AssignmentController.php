@@ -16,6 +16,12 @@ class AssignmentController extends Controller
     public function get(Request $request) {
         $query = Assignment::with(['course', 'lecture', 'doctor'])->where('doctor_id', $request->user->id);
         
+        if ($request->search) {
+            $query->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('description', 'like', '%'.$request->search.'%')
+                    ->orWhere('degree', 'like', '%'.$request->search.'%');
+        }
+        
         if ($request->course_id > 0)
             $query->where('course_id', $request->course_id);
         
