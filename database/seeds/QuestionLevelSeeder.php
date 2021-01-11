@@ -6,7 +6,7 @@ class QuestionLevelSeeder extends Seeder
 {
     private $data = [
         [ "id" => 1, "name" => 'hard', "icon" => 'fas fa-heading'],
-        [ "id" => 2, "name" => 'medum', "icon" => 'fab fa-medium-m'],
+        [ "id" => 2, "name" => 'medium', "icon" => 'fab fa-medium-m'],
         [ "id" => 3, "name" => 'easy', "icon" => 'fab fa-edge-legacy']
     ];
 
