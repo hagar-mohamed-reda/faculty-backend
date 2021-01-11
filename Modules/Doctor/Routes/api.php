@@ -44,10 +44,12 @@ Route::prefix('/doctor')->middleware(['doctor_auth'])->group(function(){
     Route::post('questions/delete/{resource}', 'QuestionController@destroy');
 
     //questions start
-    Route::get('question_categorys', 'QuestionCategoryController@get');
-    Route::post('question_categorys/store', 'QuestionCategoryController@store');
-    Route::post('question_categorys/update/{resource}', 'QuestionCategoryController@update');
-    Route::post('question_categorys/delete/{resource}', 'QuestionCategoryController@destroy');
+    Route::get('question-categorys', 'QuestionCategoryController@get');
+    Route::get('question-levels', 'MainController@getQuestionLevel');
+    Route::get('question-types', 'MainController@getQuestionType');
+    Route::post('question-categorys/store', 'QuestionCategoryController@store');
+    Route::post('question-categorys/update/{resource}', 'QuestionCategoryController@update');
+    Route::post('question-categorys/delete/{resource}', 'QuestionCategoryController@destroy');
 });
 
 Route::post('login', 'AuthController@login');

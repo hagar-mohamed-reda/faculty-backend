@@ -13,32 +13,32 @@ use Auth;
 class QuestionCategoryController extends Controller {
 
     public function get(Request $request) {
-        $query = QuestionCategory::where('doctor_id', Auth::user()->id);
-         
-        if ($request->course_id > 0) 
+        $query = QuestionCategory::where('doctor_id', $request->user->id);
+
+        if ($request->course_id > 0)
             $query->where('course_id', $request->course_id);
-        
-        return $query->latest()->get(); 
+
+        return $query->latest()->get();
     }
 
     public function store(Request $request) {
         $validator = validator($request->all(), [
-            "name" => "required", 
+            "name" => "required",
             "course_id" => "required"
-        ]); 
+        ]);
 
         if ($validator->fails()) {
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
 
         try {
-            $data = $request->all(); 
+            $data = $request->all();
             $data['doctor_id'] = optional($request->user)->id;
             if (!isset($data['faculty_id'])) {
-                $data['faculty_id'] = optional($request->user)->faculty_id; 
-            }  
-            $resource = QuestionCategory::create($data); 
-             
+                $data['faculty_id'] = optional($request->user)->faculty_id;
+            }
+            $resource = QuestionCategory::create($data);
+
             watch("add question category " . $resource->text, "fa fa-th-list");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
@@ -48,7 +48,7 @@ class QuestionCategoryController extends Controller {
 
     public function update(Request $request, QuestionCategory $resource) {
         $validator = validator($request->all(), [
-            "name" => "required", 
+            "name" => "required",
             "course_id" => "required"
         ]);
 
@@ -58,13 +58,13 @@ class QuestionCategoryController extends Controller {
         }
 
         try {
-            $data = $request->all(); 
+            $data = $request->all();
             $data['doctor_id'] = optional($request->user)->id;
             if (!isset($data['faculty_id'])) {
-                $data['faculty_id'] = optional($request->user)->faculty_id; 
-            }  
-            $resource->update($data); 
-             
+                $data['faculty_id'] = optional($request->user)->faculty_id;
+            }
+            $resource->update($data);
+
             watch("edit question category " . $resource->text, "fa fa-th-list");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
