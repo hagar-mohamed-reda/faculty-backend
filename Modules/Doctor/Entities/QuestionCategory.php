@@ -8,7 +8,7 @@ class QuestionCategory extends Model {
 
     protected $table = 'question_category';
     protected $fillable = [
-        'name', 'doctor_id', 'faculty_id', 'course_id'
+        'name', 'doctor_id', 'faculty_id', 'course_id', 'notes'
     ];
     protected $appends = ['can_delete'];
 
@@ -16,4 +16,7 @@ class QuestionCategory extends Model {
         return true;
     }
 
+    public function course(){
+        return $this->belongsTo(Course::class,'course_id');
+    }
 }

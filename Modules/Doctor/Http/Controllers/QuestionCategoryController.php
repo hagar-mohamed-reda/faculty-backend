@@ -13,12 +13,16 @@ use Auth;
 class QuestionCategoryController extends Controller {
 
     public function get(Request $request) {
-        $query = QuestionCategory::where('doctor_id', $request->user->id);
+        $query = QuestionCategory::with(['course'])->where('doctor_id', $request->user->id);
 
+        if ($request->search) {
+            $query->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('notes', 'like', '%'.$request->search.'%');
+        }
         if ($request->course_id > 0)
             $query->where('course_id', $request->course_id);
 
-        return $query->latest()->get();
+        return $query->latest()->paginate(60);
     }
 
     public function store(Request $request) {

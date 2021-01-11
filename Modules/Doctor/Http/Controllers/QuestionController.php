@@ -8,12 +8,13 @@ use Illuminate\Routing\Controller;
 use App\AppSetting;
 use Modules\Doctor\Entities\Question;
 use Auth;
+use Modules\Doctor\Entities\QuestionChoice;
 
 
 class QuestionController extends Controller {
 
     public function get(Request $request) {
-        $query = Question::where('doctor_id', Auth::user()->id);
+        $query = Question::where('doctor_id', $request->user->id);
         
         if ($request->question_type_id > 0) 
             $query->where('question_type_id', $request->question_type_id);
@@ -27,7 +28,7 @@ class QuestionController extends Controller {
         if ($request->course_id > 0) 
             $query->where('course_id', $request->course_id);
         
-        return $query->latest()->get(); 
+        return $query->latest()->paginate(60); 
     }
 
     public function store(Request $request) {
@@ -49,13 +50,26 @@ class QuestionController extends Controller {
             if (!isset($data['faculty_id'])) {
                 $data['faculty_id'] = optional($request->user)->faculty_id; 
             }  
+            $choices = json_decode($request->choices);
             $resource = Question::create($data); 
             
+            // add question choices 
+            foreach($choices as $choice) {
+                QuestionChoice::create([
+                    "text" => $choice->text,
+                    "is_answer" => $choice->is_answer,
+                    "question_id" => $resource->id,
+                    "faculty_id" => $resource->faculty_id,
+                ]);
+            }
+            
+            // upload question image
             uploadImg($request->file('image'), Question::$prefix, function($filename) use ($resource) {
                 $resource->update([
                     "image" => $filename
                 ]);
-            }, public_path($resource->image));
+            }, $resource->image);
+            
 
             
             

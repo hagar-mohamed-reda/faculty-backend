@@ -17,15 +17,21 @@ class Question extends Model
         'question_category_id',	
         'faculty_id',	
         'course_id',	
+        'doctor_id',	
         'active',	
         'is_shared',	
         'notes'	
     ];
 
-    protected $appends = ['can_delete'];
+    protected $appends = ['can_delete', 'image_url'];
 
     public function getCanDeleteAttribute() {
         return true;
     }
+    
+    public function getImageUrlAttribute() { 
+        return ($this->image)? url($this->image) : null;
+    }
+    
 }
 
