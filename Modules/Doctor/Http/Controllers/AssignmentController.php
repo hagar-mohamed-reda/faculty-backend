@@ -53,7 +53,7 @@ class AssignmentController extends Controller
             $resource = Assignment::create($data);
 
             // upload file
-            uploadImg($request->file("file"), "uploads/tasks/", function($filename) use ($resource) {
+            uploadImg($request->file("file"), "uploads/assigments/", function($filename) use ($resource) {
                 $resource->update(["file" => $filename]);
             }, $resource->file);
 
