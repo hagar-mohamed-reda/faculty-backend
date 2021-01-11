@@ -16,13 +16,14 @@ class CreateQuestionsTable extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('text');
-            $table->unsignedBigInteger('question_type_id')->nullable();
-            $table->unsignedBigInteger('question_level_id')->nullable();
-            $table->unsignedBigInteger('question_category_id')->nullable();
-            $table->unsignedBigInteger('faculty_id')->nullable();
-            $table->unsignedBigInteger('course_id')->nullable();
-            $table->boolean('active',0);
-            $table->boolean('is_shared',0);
+            $table->unsignedBigInteger('question_type_id');
+            $table->unsignedBigInteger('question_level_id');
+            $table->unsignedBigInteger('question_category_id');
+            $table->unsignedBigInteger('faculty_id');
+            $table->unsignedBigInteger('course_id');
+            $table->unsignedBigInteger('doctor_id');
+            $table->boolean('active',0)->nullable();
+            $table->boolean('is_shared',0)->nullable();
             $table->string('notes')->nullable();
             $table->string('image')->nullable();
 
