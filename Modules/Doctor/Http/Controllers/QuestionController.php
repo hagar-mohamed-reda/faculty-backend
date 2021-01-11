@@ -28,7 +28,7 @@ class QuestionController extends Controller {
         if ($request->course_id > 0)
             $query->where('course_id', $request->course_id);
 
-        return $query->with(['questionType', 'questionLevel', 'questionCategory', 'questionCourse'])
+        return $query->with(['questionType', 'questionLevel', 'questionCategory', 'course'])
                     ->latest()->paginate(60);
     }
 

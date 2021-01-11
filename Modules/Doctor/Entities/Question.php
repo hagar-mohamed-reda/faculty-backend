@@ -43,7 +43,7 @@ class Question extends Model
         return $this->belongsTo(QuestionCategory::class, 'question_category_id');
     }
 
-    public function questionCourse(){
+    public function course(){
         return $this->belongsTo(Course::class, 'course_id');
     }
 
