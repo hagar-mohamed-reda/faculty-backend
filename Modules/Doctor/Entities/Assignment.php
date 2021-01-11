@@ -22,7 +22,7 @@ class Assignment extends Model
         'faculty_id'
     ];
 
-    protected $appends = ['can_delete', 'file_url'];
+    protected $appends = ['can_delete', 'file_url', 'uploads'];
 
     public function getCanDeleteAttribute() {
         return true;
@@ -31,4 +31,21 @@ class Assignment extends Model
     public function getFileUrlAttribute() { 
         return ($this->file)? url($this->file) : null;
     }
+    
+    public function getUploadsAttribute() { 
+        return 0;
+    }
+
+    public function doctor(){
+        return $this->belongsTo(Doctor::class, 'doctor_id');
+    }
+
+    public function course(){
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+
+    public function lecture(){
+        return $this->belongsTo(Lecture::class, 'lecture_id');
+    }
+ 
 }

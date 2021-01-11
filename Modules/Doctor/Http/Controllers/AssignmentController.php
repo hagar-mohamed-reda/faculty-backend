@@ -12,8 +12,15 @@ class AssignmentController extends Controller
 {
 
     public function get(Request $request) {
-        $query = Assignment::where('doctor_id', $request->user->id)->latest()->get();
-        return $query;
+        $query = Assignment::with(['course', 'lecture', 'doctor'])->where('doctor_id', $request->user->id);
+        
+        if ($request->course_id > 0)
+            $query->where('course_id', $request->course_id);
+        
+        if ($request->lecture_id > 0)
+            $query->where('lecture_id', $request->lecture_id);
+        
+        return $query->latest()->paginate(60); 
     }
 
     public function store(Request $request) {
@@ -49,7 +56,7 @@ class AssignmentController extends Controller
 
             watch("add assignment " . $resource->name, "fa fa-calender");
             return responseJson(1, __('done'), $resource);
-        } catch (\Exception $th) {
+        } catch (Exception $th) {
             return responseJson(0, $th->getMessage());
         }
     }
