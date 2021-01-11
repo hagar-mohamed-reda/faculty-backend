@@ -15,20 +15,21 @@ class QuestionController extends Controller {
 
     public function get(Request $request) {
         $query = Question::where('doctor_id', $request->user->id);
-        
-        if ($request->question_type_id > 0) 
+
+        if ($request->question_type_id > 0)
             $query->where('question_type_id', $request->question_type_id);
-        
-        if ($request->question_level_id > 0) 
+
+        if ($request->question_level_id > 0)
             $query->where('question_level_id', $request->question_level_id);
-        
-        if ($request->question_category_id > 0) 
+
+        if ($request->question_category_id > 0)
             $query->where('question_category_id', $request->question_category_id);
-         
-        if ($request->course_id > 0) 
+
+        if ($request->course_id > 0)
             $query->where('course_id', $request->course_id);
-        
-        return $query->latest()->paginate(60); 
+
+        return $query->with(['questionType', 'questionLevel', 'questionCategory', 'questionCourse'])
+                    ->latest()->paginate(60);
     }
 
     public function store(Request $request) {
@@ -45,15 +46,15 @@ class QuestionController extends Controller {
         }
 
         try {
-            $data = $request->all(); 
+            $data = $request->all();
             $data['doctor_id'] = optional($request->user)->id;
             if (!isset($data['faculty_id'])) {
-                $data['faculty_id'] = optional($request->user)->faculty_id; 
-            }  
+                $data['faculty_id'] = optional($request->user)->faculty_id;
+            }
             $choices = json_decode($request->choices);
-            $resource = Question::create($data); 
-            
-            // add question choices 
+            $resource = Question::create($data);
+
+            // add question choices
             foreach($choices as $choice) {
                 QuestionChoice::create([
                     "text" => $choice->text,
@@ -62,17 +63,17 @@ class QuestionController extends Controller {
                     "faculty_id" => $resource->faculty_id,
                 ]);
             }
-            
+
             // upload question image
             uploadImg($request->file('image'), Question::$prefix, function($filename) use ($resource) {
                 $resource->update([
                     "image" => $filename
                 ]);
             }, $resource->image);
-            
 
-            
-            
+
+
+
             watch("add question " . $resource->text, "fa fa-question");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
@@ -94,21 +95,21 @@ class QuestionController extends Controller {
         }
 
         try {
-            $data = $request->all(); 
+            $data = $request->all();
             $data['doctor_id'] = optional($request->user)->id;
             if (!isset($data['faculty_id'])) {
-                $data['faculty_id'] = optional($request->user)->faculty_id; 
-            }  
-            $resource->update($data); 
-            
+                $data['faculty_id'] = optional($request->user)->faculty_id;
+            }
+            $resource->update($data);
+
             uploadImg($request->file('image'), Question::$prefix, function($filename) use ($resource) {
                 $resource->update([
                     "image" => $filename
                 ]);
             }, public_path($resource->image));
 
-            
-            
+
+
             watch("edit question " . $resource->text, "fa fa-question");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
