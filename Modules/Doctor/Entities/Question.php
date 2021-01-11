@@ -18,6 +18,7 @@ class Question extends Model
         'faculty_id',
         'course_id',
         'doctor_id',
+        'image',
         'active',
         'is_shared',
         'notes'
@@ -36,15 +37,21 @@ class Question extends Model
     public function questionType(){
         return $this->belongsTo(QuestionType::class, 'question_type_id');
     }
+    
     public function questionLevel(){
         return $this->belongsTo(QuestionLevel::class, 'question_level_id');
     }
+    
     public function questionCategory(){
         return $this->belongsTo(QuestionCategory::class, 'question_category_id');
     }
 
     public function course(){
         return $this->belongsTo(Course::class, 'course_id');
+    }
+
+    public function choices(){
+        return $this->hasMany(QuestionChoice::class, 'question_id');
     }
 
 }

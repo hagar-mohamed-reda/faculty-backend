@@ -28,7 +28,7 @@ class QuestionController extends Controller {
         if ($request->course_id > 0)
             $query->where('course_id', $request->course_id);
 
-        return $query->with(['questionType', 'questionLevel', 'questionCategory', 'course'])
+        return $query->with(['questionType', 'questionLevel', 'questionCategory', 'course', 'choices'])
                     ->latest()->paginate(60);
     }
 
@@ -51,7 +51,7 @@ class QuestionController extends Controller {
             if (!isset($data['faculty_id'])) {
                 $data['faculty_id'] = optional($request->user)->faculty_id;
             }
-            $choices = json_decode($request->choices);
+            $choices = json_decode($request->question_choices);
             $resource = Question::create($data);
 
             // add question choices
@@ -100,14 +100,26 @@ class QuestionController extends Controller {
             if (!isset($data['faculty_id'])) {
                 $data['faculty_id'] = optional($request->user)->faculty_id;
             }
+            
+            $choices = json_decode($request->question_choices);
             $resource->update($data);
 
+            // add question choices
+            foreach($choices as $choice) {
+                QuestionChoice::create([
+                    "text" => $choice->text,
+                    "is_answer" => $choice->is_answer,
+                    "question_id" => $resource->id,
+                    "faculty_id" => $resource->faculty_id,
+                ]);
+            }
+
+            // upload question image
             uploadImg($request->file('image'), Question::$prefix, function($filename) use ($resource) {
                 $resource->update([
                     "image" => $filename
                 ]);
-            }, public_path($resource->image));
-
+            }, $resource->image);
 
 
             watch("edit question " . $resource->text, "fa fa-question");
@@ -120,6 +132,7 @@ class QuestionController extends Controller {
     public function destroy(Question $resource) {
         try {
             watch("remove question " . $resource->text, "fa fa-question");
+            $resource->choices()->delete();
             $resource->delete();
             return responseJson(1, __('done'));
         } catch (\Exception $th) {
