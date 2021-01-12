@@ -74,8 +74,6 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('academic-years/delete/{resource}', 'AcademicYearController@destroy');
 
      // translation start
-     Route::get('translations', 'TranslationController@index');
-     Route::get('translations/get', 'TranslationController@get');
      Route::post('translations/update', 'TranslationController@update');
 
     //notifications start
@@ -136,3 +134,6 @@ Route::group(['middleware' => 'api_auth'], function () {
 
 Route::post('login', 'AuthController@login');
 Route::post('forget-password', 'AuthController@forgetPassword');
+
+Route::get('translations', 'TranslationController@index');
+Route::get('translations/get', 'TranslationController@get');
