@@ -37,7 +37,10 @@ class AuthController extends Controller
                 if ($user->active == 0)
                     return responseJson(0, __('your account is not confirmed'));
 
-                Auth::login($user);
+                //Auth::login($user);
+                $user->update([
+                    "api_token"=> randToken()
+                ]);
 
                 LoginHistory::create([
                     'ip' => $request->ip(),
