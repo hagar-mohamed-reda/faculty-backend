@@ -286,3 +286,38 @@ if (!function_exists('saveImageBase64')) {
     }
 
 }
+
+
+
+    /**
+     * random token every milisecond encrypted
+     * @return type String
+     */
+    function randToken() {
+        // time in mili seconds
+        $timeInMiliSeconds = (int) round(microtime(true) * 1000);
+
+        // random number with 8 digit
+        $randKey1 = rand(11111111, 99999999);
+
+        // token
+        $token = $timeInMiliSeconds + $randKey1;
+
+        // convert token to array
+        $tokenToArray = str_split($token);
+
+        // shif array
+        array_shift($tokenToArray);
+
+        // array to string
+        $token = implode("", $tokenToArray);
+
+        // encrypt token
+        $cryptedToken = encrypt($token);
+
+        // return token in small size
+        $b = json_decode(base64_decode($cryptedToken));
+
+        // return mac attribute
+        return $b->mac;
+    }
