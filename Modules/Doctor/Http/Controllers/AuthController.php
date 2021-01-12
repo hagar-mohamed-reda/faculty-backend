@@ -27,9 +27,11 @@ class AuthController extends Controller
 
 
         try {
-            $user = Doctor::where("email", $request->email)->orWhere('phone', $request->email)
-            ->where("password", $request->password)
-            ->first();
+            $user = Doctor::where("email", $request->email)
+                            ->orWhere('phone', $request->email)
+                            ->orWhere('username', $request->email)
+                            ->where("password", $request->password)
+                            ->first();
 
             if ($user) {
                 if ($user->active == 0)
