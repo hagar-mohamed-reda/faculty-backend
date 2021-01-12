@@ -18,7 +18,9 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             $key = $validator->errors()->first();
-            return redirect($redirect . "?status=0&msg=" . $key);
+            //return redirect($redirect . "?status=0&msg=" . $key);
+            return responseJson(0, $validator->errors()->getMessages(), "");
+
         }
         $error = __("email or password error");
 
@@ -31,7 +33,9 @@ class AuthController extends Controller
 
             if ($user) {
                 if ($user->active == 0)
-                    return redirect($redirect . "?status=0&msg=" . __('your account is not confirmed'));
+                    //return redirect($redirect . "?status=0&msg=" . __('your account is not confirmed'));
+                    return responseJson(0, __('your account is not confirmed'));
+
 
                 Auth::login($user);
 
@@ -41,10 +45,14 @@ class AuthController extends Controller
                     'email_details' => LoginHistory::getInfo($request)
                 ]);
 
-                return redirect($user->type == 'student'? 'students' : 'dashboard');
+                //return redirect($user->type == 'student'? 'students' : 'dashboard');
+                return responseJson(1, __('done'), $user);
+
             }
         } catch (Exception $ex) {}
-        return redirect($redirect . "?status=0&msg=$error");
+        //return redirect($redirect . "?status=0&msg=$error");
+        return responseJson(0, $ex->getMessage());
+
     }
 
     public function forgetPassword(Request $request) {
@@ -54,8 +62,10 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $key = $validator->errors()->first();
-            return redirect($redirect . "?status=0&msg=" . $key);
+            //$key = $validator->errors()->first();
+            //return redirect($redirect . "?status=0&msg=" . $key);
+            return responseJson(0, $validator->errors()->getMessages(), "");
+
         }
         try {
             $user = User::where("email", $request->emial)->first();
@@ -64,17 +74,24 @@ class AuthController extends Controller
                 $newPassword = $user->password;
 
                 $user->update([
-                    "password" => $newPassword
+                    "password" => $newPassword,
+                    "api_token"=> randToken()
                 ]);
 
                 //email design code
 
 
-                return redirect($redirect . "?status=1&msg=" . __('your account created please confirm your account'));
+                //return redirect($redirect . "?status=1&msg=" . __('your account created please confirm your account'));
+                return responseJson(1,  __('your account created please confirm your account'), $user);
+
             } else {
-                return redirect($redirect . "?status=0&msg=" . __('this email is not exist'));
+                //return redirect($redirect . "?status=0&msg=" . __('this email is not exist'));
+                return responseJson(0,  __('this email is not exist'));
+
             }
         } catch (\Exception $ex) {}
-        return redirect($redirect . "?status=0&msg=" . __('there is an error'));
+        //return redirect($redirect . "?status=0&msg=" . __('there is an error'));
+        return responseJson(0, $ex->getMessage());
+
     }
 }

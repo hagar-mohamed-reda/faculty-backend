@@ -68,14 +68,15 @@ class AuthController extends Controller
                 $newPassword = $user->password;
 
                 $user->update([
-                    "password" => $newPassword
+                    "password" => $newPassword,
+                    "api_token"=> randToken()
                 ]);
 
                 //email design code
 
 
                 //return redirect($redirect . "?status=1&msg=" . __('your account created please confirm your account'));
-                return responseJson(1,  __('your account created please confirm your account'));
+                return responseJson(1,  __('your account created please confirm your account'), $user);
 
             } else {
                 //return redirect($redirect . "?status=0&msg=" . __('this email is not exist'));
