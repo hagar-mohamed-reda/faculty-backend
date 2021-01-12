@@ -104,6 +104,9 @@ class QuestionController extends Controller {
             $choices = json_decode($request->question_choices);
             $resource->update($data);
 
+            // delete old
+            $resource->choices()->delete();
+            
             // add question choices
             foreach($choices as $choice) {
                 QuestionChoice::create([
