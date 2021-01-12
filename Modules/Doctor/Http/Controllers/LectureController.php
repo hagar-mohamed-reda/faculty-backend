@@ -62,21 +62,21 @@ class LectureController extends Controller
             $resource = Lecture::create($data);
 
             // upload file 1
-            uploadImg($request->file("file1"), "/uploads/lessons/", function($filename) use ($resource) { 
-                $resource->update(["file1" => $filename]); 
+            uploadImg($request->file("file1"), "/uploads/lessons/", function($filename) use ($resource) {
+                $resource->update(["file1" => $filename]);
             }, $resource->file1);
-            
+
             // upload file2
-            uploadImg($request->file("file2"), "/uploads/lessons/", function($filename) use ($resource) { 
-                $resource->update(["file2" => $filename]); 
+            uploadImg($request->file("file2"), "/uploads/lessons/", function($filename) use ($resource) {
+                $resource->update(["file2" => $filename]);
             }, $resource->file2);
- 
+
             // upload video
-            uploadImg($request->file("video"), "/uploads/lessons/", function($filename) use ($resource) { 
-                $resource->update(["video" => $filename]); 
+            uploadImg($request->file("video"), "/uploads/lessons/", function($filename) use ($resource) {
+                $resource->update(["video" => $filename]);
             }, $resource->video);
-  
-            
+
+
             watch("add lecture " . $resource->name, "fa fa-book");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
@@ -101,36 +101,36 @@ class LectureController extends Controller
         if ($validator->fails()) {
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
-        try { 
+        try {
             $data = $request->all();
             if (isset($data['file1']))
                 unset($data['file1']);
-            
+
             if (isset($data['file2']))
                 unset($data['file2']);
-            
+
             if (isset($data['video']))
                 unset($data['video']);
-            
+
             $resource->update($data);
-             
- 
+
+
             // upload file 1
-            uploadImg($request->file("file1"), "/uploads/lessons/", function($filename) use ($resource) { 
-                $resource->update(["file1" => $filename]); 
+            uploadImg($request->file("file1"), "/uploads/lessons/", function($filename) use ($resource) {
+                $resource->update(["file1" => $filename]);
             }, $resource->file1);
-            
+
             // upload file2
-            uploadImg($request->file("file2"), "/uploads/lessons/", function($filename) use ($resource) { 
-                $resource->update(["file2" => $filename]); 
+            uploadImg($request->file("file2"), "/uploads/lessons/", function($filename) use ($resource) {
+                $resource->update(["file2" => $filename]);
             }, $resource->file2);
-            
- 
+
+
             // upload video
-            uploadImg($request->file("video"), "/uploads/lessons/", function($filename) use ($resource) { 
-                $resource->update(["video" => $filename]); 
+            uploadImg($request->file("video"), "/uploads/lessons/", function($filename) use ($resource) {
+                $resource->update(["video" => $filename]);
             }, $resource->video);
-  
+
 
             watch("edit lecture " . $resource->name, "fa fa-book");
             return responseJson(1, __('done'), $resource);
@@ -141,6 +141,15 @@ class LectureController extends Controller
 
     public function destroy(Lecture $resource) {
         try {
+            if (file_exists($resource->file1)) {
+                unlink(public_path('uploads/lessons'.$resource->file1));
+            }
+            if (file_exists($resource->file2)) {
+                unlink(public_path('uploads/lessons'.$resource->file2));
+            }
+            if (file_exists($resource->video)) {
+                unlink(public_path('uploads/lessons'.$resource->video));
+            }
             watch("remove lecture " . $resource->name, "fa fa-book");
             $resource->delete();
             return responseJson(1, __('done'));
