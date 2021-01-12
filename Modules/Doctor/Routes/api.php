@@ -50,8 +50,10 @@ Route::prefix('/doctor')->middleware(['doctor_auth'])->group(function(){
     Route::post('question-categorys/store', 'QuestionCategoryController@store');
     Route::post('question-categorys/update/{resource}', 'QuestionCategoryController@update');
     Route::post('question-categorys/delete/{resource}', 'QuestionCategoryController@destroy');
-});
 
-Route::post('login', 'AuthController@login');
-Route::post('forget-password', 'AuthController@forgetPassword');
+
+    Route::post('login', 'AuthController@login');
+    Route::post('forget-password', 'AuthController@forgetPassword');
+
+});
 
