@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request; 
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +54,16 @@ Route::prefix('/doctor')->middleware(['doctor_auth'])->group(function(){
 
     Route::get('notifications', function(){
 		return DB::table('notifications')->where('user_id', request()->user->id)->get();
-	});
+    });
+
+
+    //exams start
+    Route::get('exams', 'ExamController@get');
+    Route::get('exams/{resource}', 'ExamController@load');
+    Route::post('exams/store', 'ExamController@store');
+    Route::post('exams/update/{resource}', 'ExamController@update');
+    Route::post('exams/delete/{resource}', 'ExamController@destroy');
+
 });
 Route::post('doctor/login', 'AuthController@login');
 Route::post('doctor/forget-password', 'AuthController@forgetPassword');

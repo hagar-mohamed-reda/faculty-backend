@@ -17,6 +17,7 @@ class CreateExamQuestionsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('exam_id');
             $table->integer('question_id');
+            $table->boolean('result_publish',0);
             $table->timestamps();
         });
     }
