@@ -24,7 +24,7 @@ class AuthController extends Controller
 
 
         try {
-            $user = User::where("email", $request->email)
+            $user = User::where("email", $request->email)->orWhere('phone', $request->email)
             ->where("password", $request->password)
             ->where('type', $request->type)
             ->first();

@@ -52,8 +52,8 @@ Route::prefix('/doctor')->middleware(['doctor_auth'])->group(function(){
     Route::post('question-categorys/delete/{resource}', 'QuestionCategoryController@destroy');
 
 
-    Route::post('login', 'AuthController@login');
-    Route::post('forget-password', 'AuthController@forgetPassword');
-
 });
+Route::post('doctor/login', 'AuthController@login');
+Route::post('doctor/forget-password', 'AuthController@forgetPassword');
+
 
