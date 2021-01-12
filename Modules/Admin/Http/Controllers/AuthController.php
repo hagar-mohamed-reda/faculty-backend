@@ -42,7 +42,7 @@ class AuthController extends Controller
                 LoginHistory::create([
                     'ip' => $request->ip(),
                     'user_id' => $user->id,
-                    'email_details' => LoginHistory::getInfo($request)
+                    'phone_details' => LoginHistory::getInfo($request)
                 ]);
 
                 //return redirect($user->type == 'student'? 'students' : 'dashboard');

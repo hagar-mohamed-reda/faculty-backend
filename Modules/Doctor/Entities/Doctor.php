@@ -24,6 +24,7 @@ class Doctor extends Model
         'active',
         'sms_code',
         'degree_id',
+        'api_token',
     ];
 
     protected $appends = ['can_delete'];
