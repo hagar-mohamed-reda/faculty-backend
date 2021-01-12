@@ -288,6 +288,7 @@ if (!function_exists('saveImageBase64')) {
 }
 
 
+if (!function_exists('randToken')) {
 
     /**
      * random token every milisecond encrypted
@@ -321,3 +322,4 @@ if (!function_exists('saveImageBase64')) {
         // return mac attribute
         return $b->mac;
     }
+}
