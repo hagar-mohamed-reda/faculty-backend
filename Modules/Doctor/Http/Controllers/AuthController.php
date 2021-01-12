@@ -25,8 +25,7 @@ class AuthController extends Controller
         }
         $error = __("email or password error");
 
-
-        try {
+        try { 
             $user = Doctor::where("email", $request->email)
                             ->orWhere('phone', $request->email)
                             ->orWhere('username', $request->email)
@@ -45,14 +44,15 @@ class AuthController extends Controller
                 LoginHistory::create([
                     'ip' => $request->ip(),
                     'user_id' => $user->id,
-                    'email_details' => LoginHistory::getInfo($request)
+                    'phone_details' => LoginHistory::getInfo($request)
                 ]);
 
                 return responseJson(1, __('done'), $user);
             }
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return responseJson(0, $ex->getMessage());
         }
+		return responseJson(0, $error);
     }
 
     public function forgetPassword(Request $request) {
