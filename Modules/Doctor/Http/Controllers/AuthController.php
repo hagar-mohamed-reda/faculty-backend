@@ -50,8 +50,9 @@ class AuthController extends Controller
 
                 return responseJson(1, __('done'), $user);
             }
-        } catch (Exception $ex) {}
-        return responseJson(0, $ex->getMessage());
+        } catch (\Exception $ex) {
+            return responseJson(0, $ex->getMessage());
+        }
     }
 
     public function forgetPassword(Request $request) {
@@ -87,9 +88,11 @@ class AuthController extends Controller
                 //return redirect($redirect . "?status=0&msg=" . __('this email is not exist'));
                 return \responseJson(0,  __('this email is not exist'));
             }
-        } catch (\Exception $ex) {}
+        } catch (\Exception $ex) {
+            return responseJson(0, $ex->getMessage());
+
+        }
         //return redirect($redirect . "?status=0&msg=" . __('there is an error'));
-        return responseJson(0, $ex->getMessage());
 
     }
 }
