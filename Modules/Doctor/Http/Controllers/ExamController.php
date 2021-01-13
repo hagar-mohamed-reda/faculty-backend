@@ -6,7 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Doctor\Entities\Exam;
+use Modules\Doctor\Entities\ExamDetail;
+use Modules\Doctor\Entities\ExamQuestion;
+use App\AppSetting;
 use Auth;
+use DB;
+
 class ExamController extends Controller
 {
     public function get(Request $request){
@@ -52,14 +57,46 @@ class ExamController extends Controller
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
         try {
+			// init varaibles
 			$data = $request->all();
+			// add academic year and term and doctor id
+            $data['academic_year_id'] = optional(AppSetting::getCurrentAcademicYear())->id;
+            $data['term_id'] = optional(AppSetting::getCurrentTerm())->id;
+            $data['doctor_id'] = optional($request->user)->id;
+			
+			$details = json_decode($request->exam_details, true);
+			$questions = json_decode($request->selected_questions, true);
 
-			if (!isset($data['faculty_id'])) {
+			// add faculty id
+			if (!isset($data['faculty_id'])) 
 				$data['faculty_id'] = optional($request->user)->faculty_id;
+			
+			
+			// start transaction
+			DB::beginTransaction();
+            
+			// create exam object
+			$resource = Exam::create($data);
+			
+			// add exam details
+			foreach($details as $detail) {
+				$detail['exam_id'] = $resource->id;
+				$detail['faculty_id'] = $resource->faculty_id;
+				ExamDetail::create($detail);
 			}
-            $resource = Exam::create($data);
+			
+			// add exam questions
+			foreach($questions as $questionId) { 
+				ExamQuestion::create([
+					"exam_id" => $resource->id,
+					"question_id" => $questionId
+				]);
+			}	
+			
+			// commit changes
+			DB::commit();
 
-			watch("add Exam " . $resource->name, "fa fa-graduation-cap");
+			watch("add Exam " . $resource->name, "fa fa-newspaper-o");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
@@ -78,11 +115,54 @@ class ExamController extends Controller
         if ($validator->fails()) {
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
-        try {
+        try { 
+			// init varaibles
 			$data = $request->all();
-            $resource->update($data);
+			
+			// add academic year and term and doctor id
+            $data['academic_year_id'] = optional(AppSetting::getCurrentAcademicYear())->id;
+            $data['term_id'] = optional(AppSetting::getCurrentTerm())->id;
+            $data['doctor_id'] = optional($request->user)->id;
+			
+			$details = json_decode($request->exam_details, true);
+			$questions = json_decode($request->selected_questions, true);
 
-			watch("edit Exam " . $resource->name, "fa fa-graduation-cap");
+			// add faculty id
+			if (!isset($data['faculty_id'])) 
+				$data['faculty_id'] = optional($request->user)->faculty_id;
+			
+			
+			// start transaction
+			DB::beginTransaction();
+            
+			// update exam object
+            $resource->update($data);
+			
+			// remove old exam details
+			$resource->examDetails()->delete();
+			
+			// add new exam details
+			foreach($details as $detail) {
+				$detail['exam_id'] = $resource->id;
+				$detail['faculty_id'] = $resource->faculty_id;
+				ExamDetail::create($detail);
+			}
+			
+			// remove old exam questions
+			$resource->examQuestions()->delete();
+			
+			// add exam questions
+			foreach($questions as $questionId) { 
+				ExamQuestion::create([
+					"exam_id" => $resource->id,
+					"question_id" => $questionId
+				]);
+			}	
+			
+			// commit changes
+			DB::commit();
+
+			watch("edit Exam " . $resource->name, "fa fa-newspaper-o");
             return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
@@ -92,7 +172,13 @@ class ExamController extends Controller
     public function destroy(Exam $resource)
     {
         try {
-			watch("remove Exam " . $resource->name, "fa fa-graduation-cap");
+			// remove old exam details
+			$resource->examDetails()->delete();
+			
+			// remove old exam questions
+			$resource->examQuestions()->delete();
+			
+			watch("remove Exam " . $resource->name, "fa fa-newspaper-o");
             $resource->delete();
             return responseJson(1, __('done'));
         } catch (\Exception $th) {

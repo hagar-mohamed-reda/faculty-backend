@@ -8,8 +8,8 @@ class ExamDetail extends Model
 {
     protected $table = 'exam_details';
     protected $fillable = [
-        'name',
-        'total',
+        'number',
+        'total', 
         'question_type_id',
         'question_level_id',
         'exam_id',

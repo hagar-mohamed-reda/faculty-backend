@@ -24,6 +24,7 @@ class Exam extends Model
         'academic_year_id',
         'term_id',
         'faculty_id',
+		'result_publish',
         'type',
     ];
 

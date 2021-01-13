@@ -9,8 +9,7 @@ class ExamQuestion extends Model
     protected $table = 'exam_questions';
     protected $fillable = [
         'exam_id',
-        'question_id',
-        'result_publish',
+        'question_id' 
     ];
 
     protected $appends = ['can_delete'];
