@@ -16,21 +16,22 @@ class CreateExamsTable extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('header_text');
-            $table->string('footer_text');
-            $table->string('notes');
-            $table->string('password');
+            $table->string('header_text')->nullable();
+            $table->string('footer_text')->nullable();
+            $table->string('notes')->nullable();
+            $table->string('password')->nullable();
             $table->date('start_time');
             $table->date('end_time');
             $table->integer('minutes');
-            $table->integer('question_number');
-            $table->string('required_password');
-            $table->integer('total');
-            $table->unsignedBigInteger('doctor_id')->nullable();
-            $table->unsignedBigInteger('course_id')->nullable();
-            $table->unsignedBigInteger('academic_year_id')->nullable();
-            $table->unsignedBigInteger('term_id')->nullable();
-            $table->unsignedBigInteger('faculty_id')->nullable();
+            $table->boolean('result_publish',0);
+            $table->integer('question_number')->nullable();
+            $table->string('required_password')->nullable();
+            $table->integer('total')->nullable();
+            $table->unsignedBigInteger('doctor_id');
+            $table->unsignedBigInteger('course_id');
+            $table->unsignedBigInteger('academic_year_id');
+            $table->unsignedBigInteger('term_id');
+            $table->unsignedBigInteger('faculty_id');
             $table->enum('type',['normal', 'midterm', 'final']);
 
             $table->timestamps();
