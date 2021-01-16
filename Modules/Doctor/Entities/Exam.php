@@ -42,6 +42,16 @@ class Exam extends Model
         $ids = $this->examQuestions()->pluck('question_id')->toArray();
         return Question::whereIn('id', $ids);
     }
+
+    public function students(){
+        $ids = $this->examQuestions()->pluck('question_id')->toArray();
+        return Question::whereIn('id', $ids);
+    }
+
+    public function student(){
+        $ids = $this->examQuestions()->pluck('question_id')->toArray();
+        return Question::whereIn('id', $ids);
+    }
     
     public function examDetails()
     {
