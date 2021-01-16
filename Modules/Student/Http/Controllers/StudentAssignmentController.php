@@ -30,6 +30,7 @@ class StudentAssignmentController extends Controller
                 $data['faculty_id'] = optional($request->user)->faculty_id;
             }
 
+            //delete file from storage
             if (isset($data['file'])) {
                 unset($data['file']);
             }
