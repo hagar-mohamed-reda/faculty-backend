@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Doctor\Entities\Exam;
+use Modules\Doctor\Entities\Course;
 use Modules\Doctor\Entities\ExamDetail;
 use Modules\Doctor\Entities\ExamQuestion;
 use App\AppSetting;
@@ -45,6 +46,22 @@ class ExamController extends Controller {
         $resource->questions = $resource->questions()->with(['questionType', 'questionLevel', 'questionCategory', 'course', 'choices'])->get();
         return $resource;
     }
+
+    public function getStudents(Request $request, Exam $resource) {
+
+        $studentsId = DB::table('student_courses')
+                        ->where('course_id', $resource->course_id)
+                        ->pluck('student_id')
+                        ->toArray();
+
+        $students = DB::table('students')
+                        ->whereIn('id',$students)
+                        ->paginate(60);
+
+        return $students;
+    }
+
+
 
     public function store(Request $request) {
         $validator = validator($request->all(), [

@@ -60,6 +60,7 @@ Route::prefix('/doctor')->middleware(['doctor_auth'])->group(function(){
     //exams start
     Route::get('exams', 'ExamController@get');
     Route::get('exams/{resource}', 'ExamController@load');
+    Route::get('exams/students/{resource}', 'ExamController@getStudents');
     Route::post('exams/store', 'ExamController@store');
     Route::post('exams/update/{resource}', 'ExamController@update');
     Route::post('exams/delete/{resource}', 'ExamController@destroy');
