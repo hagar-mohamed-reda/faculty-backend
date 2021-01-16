@@ -31,6 +31,11 @@ Route::group(['middleware' => 'api_auth'], function () {
 
         //student assignment starts
         Route::post('student-assignments/update', 'StudentAssignmentController@update');
+
+        //exams start
+        Route::get('exams', 'StudentExamController@get');
+        Route::get('exams/{resource}', 'StudentExamController@load');
+
     });
 });
 
