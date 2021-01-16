@@ -37,6 +37,12 @@ class Exam extends Model
     public function examQuestions(){
         return $this->hasMany(ExamQuestion::class, 'exam_id');
     }
+
+    public function questions(){
+        $ids = $this->examQuestions()->pluck('question_id')->toArray();
+        return Question::whereIn('id', $ids);
+    }
+    
     public function examDetails()
     {
         return $this->hasMany(ExamDetail::class, 'exam_id');
