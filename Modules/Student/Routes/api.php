@@ -14,9 +14,13 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['middleware' => 'api_auth'], function () {
-    Route::prefix('')->group(function() {
+    Route::prefix('/student')->group(function() {
 
-        
+
 
     });
 });
+
+Route::post('student/login', 'AuthController@login');
+Route::post('student/forget-password', 'AuthController@forgetPassword');
+
