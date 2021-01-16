@@ -30,7 +30,7 @@ Route::group(['middleware' => 'api_auth'], function () {
         Route::get('assignments/{resource}', 'AssignmentController@load');
 
         //student assignment starts
-        Route::post('student-assignments/update/{resource}', 'StudentAssignmentController@update');
+        Route::post('student-assignments/update', 'StudentAssignmentController@update');
     });
 });
 

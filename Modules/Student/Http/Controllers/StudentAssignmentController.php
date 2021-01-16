@@ -16,8 +16,7 @@ class StudentAssignmentController extends Controller
     public function update(Request $request) {
 
         $validator = validator($request->all(), [
-            "file" => "required",
-            "file"      => "max:". self::$FILESIZE . "|mimes:". self::$FILETYPE,
+            "file"  => "required|max:". self::$FILESIZE . "|mimes:". self::$FILETYPE,
         ]);
 
         if ($validator->fails()) {
@@ -26,35 +25,37 @@ class StudentAssignmentController extends Controller
 
         try {
             $data = $request->all();
-
-            if (exists($request->student_id) && exists($request->assignment_id)) {
-                if (isset($data['file']))
-                    unset($data['file']);
-
-                $resource->update($data);
-                // upload file
-                uploadImg($request->file("file"), "/uploads/answers/", function($filename) use ($resource) {
-                    $resource->update(["file" => $filename]);
-                }, $resource->file);
-
-                watch("edit answer " . $resource->name, "fa fa-calender");
-                return responseJson(1, __('done'), $resource);
-
-            }else{
-                if (!isset($data['faculty_id'])) {
-                    $data['faculty_id'] = optional($request->user)->faculty_id;
-                }
-                $resource = StudentAssignment::create($data);
-
-                // upload file
-                uploadImg($request->file("file"), "uploads/answers/", function($filename) use ($resource) {
-                    $resource->update(["file" => $filename]);
-                }, $resource->file);
-
-                watch("add answer " . $resource->name, "fa fa-calender");
-                return responseJson(1, __('done'), $resource);
+            $data['student_id'] = optional($request->user)->id;
+            if (!isset($data['faculty_id'])) {
+                $data['faculty_id'] = optional($request->user)->faculty_id;
             }
 
+            if (isset($data['file'])) {
+                unset($data['file']);
+            }
+
+            // select resource
+            $resource = StudentAssignment::query()
+                ->where('student_id', $request->user->id)
+                ->where('assigment_id', $request->assigment_id)
+                ->first();
+
+            // create resource if not exist
+            if (!$resource)  {
+                $resource = StudentAssigment::create($data);
+            } else {
+                // update resource if exists
+                $resource->update($data);
+            }
+
+            // upload file
+            uploadImg($request->file("file"), "/uploads/answers/", function($filename) use ($resource) {
+                $resource->update(["file" => $filename]);
+            }, $resource->file);
+
+            // watch user event
+            watch("edit answer " . $resource->name, "fa fa-calender");
+            return responseJson(1, __('done'), $resource);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
         }
