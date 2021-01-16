@@ -9,6 +9,8 @@ class Student extends Model
 {
     use SoftDeletes;
 
+    public static $prefix = "/uploads/students/";
+    
     protected $table = 'students';
     protected $fillable = [
         'name',
@@ -28,10 +30,14 @@ class Student extends Model
         'type',
     ];
 
-    protected $appends = ['can_delete'];
+    protected $appends = ['can_delete', 'photo_url'];
 
     public function getCanDeleteAttribute() {
         return true;
+    }
+
+    public function getPhotoUrlAttribute() {
+        return $this->photo? url($this->photo) : null;
     }
 
     public function level(){

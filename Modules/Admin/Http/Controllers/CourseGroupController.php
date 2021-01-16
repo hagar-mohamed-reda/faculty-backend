@@ -12,7 +12,7 @@ class CourseGroupController extends Controller
 
     public function get()
     {
-        $query = CourseGroup::latest()->get();
+        $query = CourseGroup::where('course_id', request()->course_id)->latest()->get();
         return $query;
     }
 

@@ -114,10 +114,10 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('courses/restore/{resource}', 'CourseController@restore');
 
     //course-groups start
-    Route::get('course-groups', 'CourseGroupsController@get');
-    Route::post('course-groups/store', 'CourseGroupsController@store');
-    Route::post('course-groups/update/{resource}', 'CourseGroupsController@update');
-    Route::post('course-groups/delete/{resource}', 'CourseGroupsController@destroy');
+    Route::get('course-groups', 'CourseGroupController@get');
+    Route::post('course-groups/store', 'CourseGroupController@store');
+    Route::post('course-groups/update/{resource}', 'CourseGroupController@update');
+    Route::post('course-groups/delete/{resource}', 'CourseGroupController@destroy');
 
     //student-registers start
     Route::get('student-registers', 'RegisterStudentController@get');

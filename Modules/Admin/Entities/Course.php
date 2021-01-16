@@ -9,6 +9,8 @@ class Course extends Model
 {
     use SoftDeletes;
 
+    public static $prefix = "/uploads/courses/";
+    
     protected $table = 'courses';
     protected $fillable = [
         'name',
@@ -22,7 +24,11 @@ class Course extends Model
         'active',
     ];
 
-    protected $appends = ['can_delete', 'register_student_count', 'register_doctor_count', 'department_count'];
+    protected $appends = ['can_delete', 'register_student_count', 'register_doctor_count', 'department_count', 'photo_url'];
+
+    public function getPhotoUrlAttribute() {
+        return $this->photo? url($this->photo) : null;
+    }
 
     public function getCanDeleteAttribute() {
         return true;
@@ -50,6 +56,10 @@ class Course extends Model
 
     public function departments(){
         return $this->hasMany(CourseDepartment::class, 'division_id');
+    }
+
+    public function groups(){
+        return $this->hasMany(CourseGroup::class, 'course_id');
     }
 
     public function registerStudent(){
