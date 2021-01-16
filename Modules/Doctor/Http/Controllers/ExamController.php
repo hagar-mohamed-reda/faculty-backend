@@ -47,12 +47,10 @@ class ExamController extends Controller {
         return $resource;
     }
 
-    public function getStudents(Request $request, $resource) {
-        $exam = Exam::where('id', $resource)->first();
-        $course = Course::where('id', $exam->course_id)->first();
+    public function getStudents(Request $request, Exam $resource) {
 
         $studentsId = DB::table('student_courses')
-                        ->where('course_id', $course->id)
+                        ->where('course_id', $resource->course_id)
                         ->pluck('student_id')
                         ->toArray();
 
