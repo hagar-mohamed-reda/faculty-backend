@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
- 
+
 
 Route::group(['middleware' => 'api_auth'], function () {
 
@@ -130,13 +130,13 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::get('users', 'UserController@get');
     Route::post('users/store', 'UserController@store');
     Route::post('users/update/{resource}', 'UserController@update');
-    Route::post('users/delete/{resource}', 'UserController@destroy');   
+    Route::post('users/delete/{resource}', 'UserController@destroy');
 
     //roles start
     Route::get('roles', 'RoleController@get');
     Route::post('roles/store', 'RoleController@store');
     Route::post('roles/update/{resource}', 'RoleController@update');
-    Route::post('roles/delete/{resource}', 'RoleController@destroy');   
+    Route::post('roles/delete/{resource}', 'RoleController@destroy');
 
 });
 
