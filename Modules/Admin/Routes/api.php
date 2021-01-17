@@ -138,6 +138,19 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('roles/update/{resource}', 'RoleController@update');
     Route::post('roles/delete/{resource}', 'RoleController@destroy');
 
+
+    // permissions
+    Route::get('permissions', 'PermissionController@index');
+    Route::post('permissions/store', 'PermissionController@store');
+    Route::post('permissions/update/{resource}', 'PermissionController@update');
+    Route::post('permissions/delete/{resource}', 'PermissionController@destroy');
+
+    // permissions_groups
+    Route::get('permission_groups', 'PermissionGroupController@index');
+    Route::post('permission_groups/store', 'PermissionGroupController@store');
+    Route::post('permission_groups/update/{resource}', 'PermissionGroupController@update');
+    Route::post('permission_groups/delete/{resource}', 'PermissionGroupController@destroy');
+
 });
 
 Route::post('login', 'AuthController@login');
