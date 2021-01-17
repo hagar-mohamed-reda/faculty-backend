@@ -19,6 +19,7 @@ class Student extends Model
         'department_id',
         'division_id',
         'faculty_id',
+        'api_token',
         'code',
         'phone',
         'email',

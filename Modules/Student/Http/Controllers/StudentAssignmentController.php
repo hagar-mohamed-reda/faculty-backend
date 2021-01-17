@@ -5,9 +5,10 @@ namespace Modules\Student\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Modules\Doctor\Entities\StudentAssignment;
+use Modules\Student\Entities\StudentAssignment;
 use App\AppSetting;
 use Auth;
+
 class StudentAssignmentController extends Controller
 {
     public static $FILESIZE = 5000;
@@ -16,11 +17,11 @@ class StudentAssignmentController extends Controller
     public function update(Request $request) {
 
         $validator = validator($request->all(), [
-            "file"  => "required|max:". self::$FILESIZE . "|mimes:". self::$FILETYPE,
+            "student_file"  => "required|max:". self::$FILESIZE . "|mimes:". self::$FILETYPE,
         ]);
 
         if ($validator->fails()) {
-            return responseJson(0, $validator->errors()->getMessages(), "");
+            return responseJson(0, $validator->errors()->first(), "");
         }
 
         try {
@@ -31,26 +32,26 @@ class StudentAssignmentController extends Controller
             }
 
             //delete file from storage
-            if (isset($data['file'])) {
-                unset($data['file']);
+            if (isset($data['student_file'])) {
+                unset($data['student_file']);
             }
 
             // select resource
             $resource = StudentAssignment::query()
                 ->where('student_id', $request->user->id)
-                ->where('assigment_id', $request->assigment_id)
+                ->where('assignment_id', $request->assignment_id)
                 ->first();
 
             // create resource if not exist
             if (!$resource)  {
-                $resource = StudentAssigment::create($data);
+                $resource = StudentAssignment::create($data);
             } else {
                 // update resource if exists
                 $resource->update($data);
             }
 
             // upload file
-            uploadImg($request->file("file"), "/uploads/answers/", function($filename) use ($resource) {
+            uploadImg($request->file("student_file"), "/uploads/answers/", function($filename) use ($resource) {
                 $resource->update(["file" => $filename]);
             }, $resource->file);
 

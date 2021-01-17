@@ -7,7 +7,7 @@ use App\User;
 use DB;
 use Modules\Admin\Entities\Student;
 
-class StudentApi
+class StudentAuth
 {
     /**
      * Handle an incoming request.

@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => 'api_auth'], function () {
+Route::group(['middleware' => 'student_auth'], function () {
     Route::prefix('/student')->group(function() {
 
         //courses start

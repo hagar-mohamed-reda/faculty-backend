@@ -18,7 +18,7 @@ class LectureController extends Controller
                         ->toArray();
 
         $query = Lecture::whereIn('course_id', $coursesIds);
-
+ 
         if ($request->course_id > 0)
             $query->where('course_id', $request->course_id);
 

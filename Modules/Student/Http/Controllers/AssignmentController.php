@@ -16,13 +16,25 @@ class AssignmentController extends Controller
                         ->where('student_id', $request->user->id)
                         ->pluck('course_id')
                         ->toArray();
+       
+        $query = Assignment::query()
+                ->whereIn('course_id', $coursesIds)
+                ->whereDate('date_from', '<=', date('Y-m-d'))
+                ->whereDate('date_to', '>=', date('Y-m-d'));
 
-        $query = Assignment::whereIn('course_id', $coursesIds);
-
+        if ($request->search) {
+            $query->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('description', 'like', '%'.$request->search.'%')
+                    ->orWhere('degree', 'like', '%'.$request->search.'%');
+        }
+        
         if ($request->course_id > 0)
             $query->where('course_id', $request->course_id);
 
-        return $query->latest()->get();
+        if ($request->lecture_id > 0)
+            $query->where('lecture_id', $request->lecture_id);
+
+        return $query->with(['lecture', 'course', 'doctor'])->latest()->paginate(60);
     }
 
     public function load(Request $request,  $resource) {

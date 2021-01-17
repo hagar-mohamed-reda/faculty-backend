@@ -22,8 +22,12 @@ class Course extends Model
         'active',
     ];
 
-    protected $appends = ['can_delete', 'register_student_count', 'register_doctor_count', 'department_count'];
+    protected $appends = ['can_delete', 'register_student_count', 'department_count', 'photo_url'];
 
+    public function getPhotoUrlAttribute() {
+        return $this->photo? url($this->photo) : null;
+    }
+    
     public function getCanDeleteAttribute() {
         return true;
     }
@@ -34,10 +38,7 @@ class Course extends Model
     public function getRegisterStudentCountAttribute() {
         return $this->registerStudent()->count();
     }
-
-    public function getRegisterDoctorCountAttribute() {
-        return $this->registerDoctor()->count();
-    }
+ 
 
     public function level(){
         return $this->belongsTo(Level::class, 'level_id');
@@ -59,7 +60,5 @@ class Course extends Model
     public function registerStudent(){
         return $this->hasMany(RegisterStudent::class, 'course_id');
     }
-    public function registerDoctor(){
-        return $this->hasMany(RegisterDoctor::class, 'course_id');
-    }
+    
 }

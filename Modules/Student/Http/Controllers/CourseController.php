@@ -8,21 +8,18 @@ use Illuminate\Routing\Controller;
 use Modules\Student\Entities\Course;
 use Modules\Student\Entities\RegisterStudent;
 use Auth;
-class CourseController extends Controller
-{
-    public function get(Request $request){
-        $studentCourse = [];
-        $studentCourse =  RegisterStudent::where('student_id', $request->user->id)
-                                            ->pluck('course_id')->toArray();
 
-        $query = Course::query();
+class CourseController extends Controller {
 
-        $query->where(function($q) use ($studentCourse){
-            $q->whereIn('id', $studentCourse);
-        });
+    public function get(Request $request) {
+        $studentCourse = RegisterStudent::query()
+                ->where('student_id', $request->user->id)
+                ->pluck('course_id')->toArray();
+
+        $query = Course::whereIn('id', $studentCourse); 
 
         if ($request->search)
-            $query->where('name', 'like', '%'. $request->search . '%');
+            $query->where('name', 'like', '%' . $request->search . '%');
 
         if ($request->level_id > 0)
             $query->where('level_id', $request->level_id);
@@ -30,7 +27,7 @@ class CourseController extends Controller
         return $query->with(['lectures', 'level', 'departments'])->latest()->paginate(10);
     }
 
-    public function load(Request $request,  $resource) {
+    public function load(Request $request, $resource) {
         return Course::with(['lectures', 'level', 'departments'])->find($resource);
     }
 

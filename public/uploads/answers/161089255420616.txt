@@ -1,0 +1,9 @@
+exam_details
+	-id
+	-question_type_id
+	-number
+	-grade
+	-exam_id
+	-created_at
+	-updated_at
+

@@ -14,9 +14,14 @@ class StudentAssignment extends Model
         'faculty_id'
     ];
 
-    protected $appends = ['can_delete'];
+    protected $appends = ['can_delete', 'file_url'];
 
     public function getCanDeleteAttribute() {
         return true;
     }
+    
+    public function getFileUrlAttribute() {
+        return ($this->file)? url($this->file) : null;
+    }
+    
 }

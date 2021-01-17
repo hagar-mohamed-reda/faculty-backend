@@ -22,7 +22,7 @@ class Assignment extends Model
         'faculty_id'
     ];
 
-    protected $appends = ['can_delete', 'file_url', 'uploads'];
+    protected $appends = ['can_delete', 'file_url', 'uploaded', 'student_assignment'];
 
     public function getCanDeleteAttribute() {
         return true;
@@ -32,20 +32,30 @@ class Assignment extends Model
         return ($this->file)? url($this->file) : null;
     }
 
-    public function getUploadsAttribute() {
-        return 0;
+    public function getStudentAssignmentAttribute() {
+        return StudentAssignment::query()
+                ->where('assignment_id', $this->id)
+                ->where('student_id', optional(request()->user)->id)
+                ->first();
+    }
+
+    public function getUploadedAttribute() {
+        return StudentAssignment::query()
+                ->where('assignment_id', $this->id)
+                ->where('student_id', optional(request()->user)->id)
+                ->exists();
     }
 
     public function doctor(){
-        return $this->belongsTo(Doctor::class, 'doctor_id');
+        return $this->belongsTo(Doctor::class, 'doctor_id')->select('id', 'name');
     }
 
     public function course(){
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->belongsTo(Course::class, 'course_id')->select('id', 'name');
     }
 
     public function lecture(){
-        return $this->belongsTo(Lecture::class, 'lecture_id');
+        return $this->belongsTo(Lecture::class, 'lecture_id')->select('id', 'name');
     }
 
 }

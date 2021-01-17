@@ -1,0 +1,316 @@
+
+students
+	id
+	name
+	photo
+	username
+	password
+	level_id
+	department_id
+	division_id
+	code
+	phone
+	email		
+	national_id
+	active
+	sms_code
+	type ['normal', 'graduation']
+	created_at
+	deleted_at
+	updated_at
+	faculty_id
+
+doctors
+	id
+	name
+	photo
+	username
+	password
+	division_id
+	special_id
+	phone
+	email	
+	universty_email
+	active
+	sms_code
+	degree
+	deleted_at
+	faculty_id
+
+courses
+	id
+	name
+	photo
+	credit_hour
+	description
+	final_degree	
+	active
+	level_id
+	deleted_at
+	faculty_id
+
+course_groups
+	id
+	name
+	course_id
+	academic_year_id
+	term_id
+	faculty_id
+
+student_courses
+	id
+	student_id
+	course_id
+	group_id
+	academic_year_id
+	term_id
+	faculty_id
+
+course_departments
+	id
+	course_id
+	division_id
+	faculty_id
+
+course_doctors	
+	id
+	course_id
+	group_id
+	course_id
+	doctor_id
+	faculty_id
+
+academic_years
+	id
+	name
+	faculty_id
+
+levels
+	id
+	name
+	faculty_id
+
+division
+	id
+	name
+	faculty_id
+
+departments
+	id
+	division_id
+	level_id
+	faculty_id
+
+terms
+	id
+	name 
+	
+specializations
+	id
+	name
+	faculty_id
+
+degree_maps
+	id
+	name
+	gpa
+	key
+	percent_from
+	percent_to
+	faculty_id
+
+
+research_degree_maps
+	id
+	name
+	faculty_id
+	
+
+faculty
+	id
+	name
+	logo
+	description
+	message_text
+	message_file
+	vision_text
+	vision_file
+	target_text
+	target_file
+
+settings
+	id
+	name
+	value
+	faculty_id
+
+users
+	id
+	name
+	username
+	password
+	photo
+	faculty_id
+	role_id
+	type [admin, student, doctor]
+
+
+permissions
+	id
+	name
+
+role
+	id
+	name
+	faculty_id
+
+role_permissions
+	id
+	role_id
+	permission_id
+	faculty_id
+
+
+lectures
+	id
+	name
+	description
+	file1
+	file2
+	video
+	youtube_url
+	active
+	doctor_id
+	course_id
+	term_id
+	academic_year_id
+	faculty_id
+
+assigments
+	id
+	name
+	date_from	
+	date_to
+	file
+	doctor_id
+	course_id
+	faculty_id
+	lecture_id
+	term_id
+	academic_year_id
+	degree
+
+student_assigments
+	id
+	student_id
+	assigment_id
+	file
+	faculty_id
+
+student_lectures
+	id
+	lecture_id
+	student_id
+
+question_levels
+	id
+	name
+	icon
+
+question_types
+	id
+	name
+	icon
+
+questions
+	id
+	text
+	question_type_id
+	question_level_id
+	question_category_id
+	notes
+	active
+	course_id
+	faculty_id
+	is_shared
+
+
+question_category
+	id
+	name
+	doctor_id
+	course_id
+	faculty_id
+
+question_choices
+	id
+	question_id
+	text
+	is_answer
+	faculty_id
+	
+
+exams
+	id
+	name
+	header_text
+	footer_text
+	notes
+	password
+	start_time
+	end_time
+	course_id
+	doctor_id
+	minutes
+	question_number
+	required_password
+	total
+	academic_year_id
+	term_id
+	type [normal, midterm, final]
+	faculty_id
+
+exam_details
+	id
+	question_type_id
+	question_level_id
+	number
+	total
+	exam_id
+	faculty_id
+
+exam_assign
+	id
+	student_id
+	exam_id
+	academic_year_id
+	term_id
+	faculty_id
+
+student_exams
+	id
+	student_id
+	exam_id
+	grade
+	feedback
+	is_start
+	is_ended
+	start_time
+	end_time
+	degree_map_id
+	academic_year_id
+	term_id
+
+student_exam_details
+	id
+	student_exam_id
+	question_id
+	answer_id
+	grade
+	answer
+	
+	
+
+
+
+	
