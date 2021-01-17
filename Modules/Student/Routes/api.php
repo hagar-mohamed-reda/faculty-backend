@@ -14,9 +14,31 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['middleware' => 'api_auth'], function () {
-    Route::prefix('')->group(function() {
+    Route::prefix('/student')->group(function() {
 
-        
+        //courses start
+        Route::get('courses', 'CourseController@get');
+        Route::get('courses/{resource}', 'CourseController@load');
+
+        //lectures start
+        Route::get('lectures', 'LectureController@get');
+        Route::get('lectures/{resource}', 'LectureController@load');
+
+
+        //assignments start
+        Route::get('assignments', 'AssignmentController@get');
+        Route::get('assignments/{resource}', 'AssignmentController@load');
+
+        //student assignment starts
+        Route::post('student-assignments/update', 'StudentAssignmentController@update');
+
+        //exams start
+        Route::get('exams', 'StudentExamController@get');
+        Route::get('exams/{resource}', 'StudentExamController@load');
 
     });
 });
+
+Route::post('student/login', 'AuthController@login');
+Route::post('student/forget-password', 'AuthController@forgetPassword');
+

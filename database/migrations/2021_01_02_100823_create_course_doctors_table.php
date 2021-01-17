@@ -19,6 +19,8 @@ class CreateCourseDoctorsTable extends Migration
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->unsignedBigInteger('group_id')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
+            $table->unsignedBigInteger('term_id')->nullable();
+            $table->unsignedBigInteger('academic_year_id')->nullable();
 
             $table->timestamps();
         });
