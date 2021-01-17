@@ -15,14 +15,14 @@ class CreateStudentExamsTable extends Migration
     {
         Schema::create('student_exams', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('student_id')->nullable();
-            $table->unsignedBigInteger('exam_id')->nullable();
-            $table->float('grade');
-            $table->string('feedback');
-            $table->boolean('is_start',0);
-            $table->boolean('is_ended',0);
-            $table->date('start_time');
-            $table->date('end_time');
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('exam_id');
+            $table->float('grade')->nullable();
+            $table->string('feedback')->nullable();
+            $table->boolean('is_started',0)->nullable();
+            $table->boolean('is_ended',0)->nullable();
+            $table->dateTime('start_time')->nullable();
+            $table->dateTime('end_time')->nullable();
             $table->unsignedBigInteger('degree_map_id')->nullable();
             $table->unsignedBigInteger('academic_year_id')->nullable();
             $table->unsignedBigInteger('term_id')->nullable();
