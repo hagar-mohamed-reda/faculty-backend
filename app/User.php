@@ -10,6 +10,7 @@ use DB;
 
 class User extends Authenticatable
 { 
+    public static $prefix = "/uploads/users/";
     use Notifiable;
 
     /**
@@ -17,17 +18,24 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password', 'username', 'image', 'phone', 'api_token', 'role_id'
+    protected $fillable = [ 
+        'name',
+        'photo',
+        'username',
+        'password',
+        'faculty_id',
+        'role_id',
+        'type',
+        'api_token'
     ];
 
     
     protected $appends = [
-         'image_url', 'permissions'
+         'photo_url', 'permissions'
     ];
     
-    public function getImageUrlAttribute() {
-        return url("/") . "/". $this->image;
+    public function getPhotoUrlAttribute() {
+        return $this->photo? url($this->photo) : null;
     }
 
     public function getPermissionsAttribute() {
@@ -77,6 +85,10 @@ class User extends Authenticatable
 
     public function role(){
         return $this->belongsTo('App\Role', 'role_id');
+    }
+
+    public function faculty(){
+        return $this->belongsTo(\Modules\Admin\Entities\Faculty::class, 'faculty_id');
     }
      
 }

@@ -55,7 +55,7 @@ class Course extends Model
     }
 
     public function departments(){
-        return $this->hasMany(CourseDepartment::class, 'division_id');
+        return $this->hasMany(CourseDepartment::class, 'course_id');
     }
 
     public function groups(){
@@ -67,5 +67,23 @@ class Course extends Model
     }
     public function registerDoctor(){
         return $this->hasMany(RegisterDoctor::class, 'course_id');
+    }
+
+    public function students(){
+        return $this->registerStudent()
+                ->join('students', 'students.id', '=', 'student_id')
+                ->select('*')
+                ->selectRaw('(select name from levels where levels.id = level_id) as level')
+                ->selectRaw('(select name from departments where departments.id = department_id) as department')
+                ->selectRaw('(select name from course_groups where course_groups.id = group_id) as group_name');
+    }
+
+    public function doctors(){
+        return $this->registerDoctor()
+                ->join('doctors', 'doctors.id', '=', 'doctor_id')
+                ->select('*')
+                ->selectRaw('(select name from specializations where specializations.id = special_id) as special') 
+                ->selectRaw('(select name from divisions where divisions.id = division_id) as division')
+                ->selectRaw('(select name from course_groups where course_groups.id = group_id) as group_name');
     }
 }

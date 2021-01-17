@@ -35,8 +35,8 @@ class CourseController extends Controller {
     }
 
     public function show(Course $resource) {
-        $resource->students = Student::whereIn("id", $resource->registerStudent()->pluck("student_id")->toArray());
-        $resource->doctors = Doctor::with(['department', 'special'])->whereIn("id", $resource->registerDoctor()->pluck("doctor_id")->toArray());
+        $resource->students = $resource->students()->get();
+        $resource->doctors = $resource->doctors()->get();
         $resource->groups = $resource->groups;
         return $resource;
     }
@@ -147,7 +147,7 @@ class CourseController extends Controller {
         return responseJson(1, __('done'));
     }
 
-    public function getImportTemplateFile() {
+    public function getImportTemplateFile() { 
         return response()->download('uploads/excel/add_course_template.xlsx');
     }
 

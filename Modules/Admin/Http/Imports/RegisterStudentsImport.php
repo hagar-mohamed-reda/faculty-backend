@@ -16,18 +16,19 @@ class RegisterStudentsImport implements ToModel {
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function model(array $row) {
-        $student = Student::where('code', $this->preNumber($row[0]))->first();
-        $course = Course::where('code', $this->preNumber($row[1]))->first();
         try {
+            $student = Student::where('code', $this->preNumber($row[0]))->first();
+            $course = Course::where('code', $this->preNumber($row[1]))->first();
             $stds = RegisterStudent::where('student_id', $student->id)
                     ->where('course_id', $course->id)
-                    ->where('group_id', request()->group_id)
                     ->first();
             if (!$stds) {
                 $stds = RegisterStudent::create([
                             'student_id' => $student->id,
                             'course_id' => $course->id,
                             'group_id' => request()->group_id,
+                            'academic_year_id' => optional(currentAcademicYear())->id,
+                            'term_id' => optional(currentTerm())->id,
                             'faculty_id' => optional(request()->user)->faculty_id,
                 ]);
             } else {

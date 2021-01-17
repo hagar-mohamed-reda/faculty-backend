@@ -28,14 +28,31 @@ class RegisterStudentController extends Controller {
             return responseJson(0, $validator->errors()->getMessages(), "");
         }
         try {
-            $data = $request->all();
-
+            $data = $request->all(); 
+            $data['academic_year_id'] = optional(currentAcademicYear())->id;
+            $data['term_id'] = optional(currentTerm())->id;
             if (!isset($data['faculty_id'])) {
                 $data['faculty_id'] = optional($request->user)->faculty_id;
             }
-            $resource = RegisterStudent::create($data);
-            watch("add Register Student " . $resource->name, "fa fa-registered");
-            return responseJson(1, __('done'), $resource);
+            $registered = false;
+            $resource = RegisterStudent::query()
+                    ->where('student_id', $request->student_id)
+                    ->where('course_id', $request->course_id)
+                    ->where('academic_year_id', optional(currentAcademicYear())->id)
+                    ->where('term_id', optional(currentTerm())->id)
+                    ->first();
+            
+            if (!$resource) {
+                $resource = RegisterStudent::create($data);
+                $registered = true;
+            }
+            else  {
+                $resource->delete();
+                $registered = false;
+            }
+            
+            watch("add Register Student ", "fa fa-registered");
+            return responseJson(1, __('done'), $registered);
         } catch (\Exception $th) {
             return responseJson(0, $th->getMessage());
         }

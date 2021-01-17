@@ -44,9 +44,9 @@ class DoctorController extends Controller {
     public function store(Request $request) {
         $validator = validator($request->all(), [
             "name" => "required",
-            "username" => "required|unique:students,username," . $request->id,
-            "email" => "required|unique:students,email," . $request->id,
-            "phone" => "required|unique:students,phone," . $request->id,
+            "username" => "required|unique:doctors,username," . $request->id,
+            "email" => "required|unique:doctors,email," . $request->id,
+            "phone" => "required|unique:doctors,phone," . $request->id,
             "password" => "required",
             "special_id" => "required",
             "division_id" => "required",
@@ -82,9 +82,9 @@ class DoctorController extends Controller {
     public function update(Request $request, Doctor $resource) {
         $validator = validator($request->all(), [
             "name" => "required",
-            "username" => "required|unique:students,username," . $request->id,
-            "email" => "required|unique:students,email," . $request->id,
-            "phone" => "required|unique:students,phone," . $request->id,
+            "username" => "required|unique:doctors,username," . $request->id,
+            "email" => "required|unique:doctors,email," . $request->id,
+            "phone" => "required|unique:doctors,phone," . $request->id,
             "password" => "required",
             "special_id" => "required",
             "division_id" => "required",

@@ -12,10 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/admin', function (Request $request) {
-    return $request->user();
-});
+ 
 
 Route::group(['middleware' => 'api_auth'], function () {
 
@@ -108,9 +105,9 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('courses/update/{resource}', 'CourseController@update');
     Route::post('courses/delete/{resource}', 'CourseController@destroy');
     Route::post('courses/import', 'CourseController@import');
-    Route::get('courses/export', 'CourseController@export');
-    Route::get('courses/import-file', 'CourseController@getImportTemplateFile');
-    Route::get('courses/archive', 'CourseController@getArchive');
+    Route::get('course/export', 'CourseController@export');
+    Route::get('course/import-file', 'CourseController@getImportTemplateFile');
+    Route::get('course/archive', 'CourseController@getArchive');
     Route::post('courses/restore/{resource}', 'CourseController@restore');
 
     //course-groups start
@@ -129,6 +126,17 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::get('doctor-registers', 'RegisterDoctorController@get');
     Route::post('doctor-registers/register', 'RegisterDoctorController@register');
 
+    //users start
+    Route::get('users', 'UserController@get');
+    Route::post('users/store', 'UserController@store');
+    Route::post('users/update/{resource}', 'UserController@update');
+    Route::post('users/delete/{resource}', 'UserController@destroy');   
+
+    //roles start
+    Route::get('roles', 'RoleController@get');
+    Route::post('roles/store', 'RoleController@store');
+    Route::post('roles/update/{resource}', 'RoleController@update');
+    Route::post('roles/delete/{resource}', 'RoleController@destroy');   
 
 });
 

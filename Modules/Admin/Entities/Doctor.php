@@ -4,6 +4,7 @@ namespace Modules\Admin\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 
 class Doctor extends Model
 {
@@ -28,8 +29,26 @@ class Doctor extends Model
         'degree_id',
     ];
 
-    protected $appends = ['can_delete', 'photo_url'];
+    protected $appends = ['can_delete', 'photo_url', 'is_register', 'group_id'];
 
+    public function getIsRegisterAttribute() {
+        return DB::table('course_doctors')
+                ->where('course_id', request()->course_id)
+                ->where('doctor_id', $this->id)
+                ->where('academic_year_id', optional(currentAcademicYear())->id)
+                ->where('term_id', optional(currentTerm())->id)
+                ->exists();
+    }
+
+    public function getGroupIdAttribute() {
+        return optional(DB::table('course_doctors')
+                ->where('course_id', request()->course_id)
+                ->where('doctor_id', $this->id)
+                ->where('academic_year_id', optional(currentAcademicYear())->id)
+                ->where('term_id', optional(currentTerm())->id)
+                ->first())->group_id;
+    }
+    
     public function getCanDeleteAttribute() {
         return true;
     }

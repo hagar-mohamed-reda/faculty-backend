@@ -25,6 +25,18 @@ if (!function_exists('uploadImg')) {
     }
 }
 
+if (!function_exists('currentAcademicYear')) {
+    function currentAcademicYear() {
+        return App\AppSetting::getCurrentAcademicYear();
+    }
+}
+
+if (!function_exists('currentTerm')) {
+    function currentTerm() {
+        return App\AppSetting::getCurrentTerm();
+    }
+}
+
 if (!function_exists('trans')) {
 
     /**
