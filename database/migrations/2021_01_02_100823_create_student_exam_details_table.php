@@ -15,11 +15,11 @@ class CreateStudentExamDetailsTable extends Migration
     {
         Schema::create('student_exam_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('student_exam_id')->nullable();
-            $table->unsignedBigInteger('question_id')->nullable();
+            $table->unsignedBigInteger('student_exam_id');
+            $table->unsignedBigInteger('question_id');
             $table->unsignedBigInteger('answer_id')->nullable();
-            $table->float('grade');
-            $table->string('answer');
+            $table->float('grade')->nullable();
+            $table->longText('answer')->nullable();
 
             $table->timestamps();
         });
