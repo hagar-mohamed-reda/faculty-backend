@@ -33,6 +33,10 @@ Route::group(['middleware' => 'student_auth'], function () {
         Route::post('student-assignments/update', 'StudentAssignmentController@update');
 
         //exams start
+        Route::get('exam-room', 'ExamRoomController@get');
+        Route::get('exam-room/{resource}', 'ExamRoomController@load');
+        
+        //exams start
         Route::get('exams', 'StudentExamController@get');
         Route::get('exams/{resource}', 'StudentExamController@load');
 

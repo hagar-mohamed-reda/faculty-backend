@@ -29,7 +29,7 @@ class StudentExamController extends Controller
             $query->where('is_ended', $request->is_ended);
 
 
-        return $query->latest()->paginate(10);
+        return $query->with(['doctor', 'exam'])->latest()->paginate(10);
     }
 
     public function load(Request $request, $resource) {
