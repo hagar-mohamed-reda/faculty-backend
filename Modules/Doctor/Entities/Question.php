@@ -51,7 +51,7 @@ class Question extends Model
     }
 
     public function choices(){
-        return $this->hasMany(QuestionChoice::class, 'question_id');
+        return $this->hasMany(QuestionChoice::class, 'question_id')->orderByRaw("RAND()");
     }
 
 }
