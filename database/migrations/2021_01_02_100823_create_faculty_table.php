@@ -16,14 +16,14 @@ class CreateFacultyTable extends Migration
         Schema::create('faculty', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('logo');
-            $table->string('description');
-            $table->string('message_text');
-            $table->string('message_file');
-            $table->string('vision_text');
-            $table->string('vision_file');
-            $table->string('target_text');
-            $table->string('target_file');
+            $table->string('logo')->nullable();
+            $table->string('description')->nullable();
+            $table->string('message_text')->nullable();
+            $table->string('message_file')->nullable();
+            $table->string('vision_text')->nullable();
+            $table->string('vision_file')->nullable();
+            $table->string('target_text')->nullable();
+            $table->string('target_file')->nullable();
 
             $table->timestamps();
         });
