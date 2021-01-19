@@ -35,10 +35,12 @@ Route::group(['middleware' => 'student_auth'], function () {
         //exams start
         Route::get('exam-room', 'ExamRoomController@get');
         Route::get('exam-room/{resource}', 'ExamRoomController@load');
+        Route::post('exam-room/store', 'ExamRoomController@store');
         
         //exams start
         Route::get('exams', 'StudentExamController@get');
         Route::get('exams/{resource}', 'StudentExamController@load');
+         
 
     });
 });

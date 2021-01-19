@@ -136,6 +136,7 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::get('roles', 'RoleController@get');
     Route::post('roles/store', 'RoleController@store');
     Route::post('roles/update/{resource}', 'RoleController@update');
+    Route::post('roles/assign/{resource}', 'RoleController@updatePermissions');
     Route::post('roles/delete/{resource}', 'RoleController@destroy');
 
 

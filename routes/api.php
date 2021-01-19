@@ -28,3 +28,6 @@ Route::group(['middleware' => 'api_auth'], function () {
     //end
 
 });
+
+Route::get('/global-setting', "HomeController@get");
+Route::post('/global-setting/update', "HomeController@update");

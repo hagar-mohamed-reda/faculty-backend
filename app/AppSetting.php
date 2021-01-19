@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Modules\Admin\Entities\AcademicYear;
+use Modules\Admin\Entities\Term;
 
 class AppSetting extends Model
 {
@@ -12,10 +14,21 @@ class AppSetting extends Model
      * 
      */
     public static function getCurrentAcademicYear() {
-        $resource = new \Modules\Admin\Entities\AcademicYear();//DB::table('academic_years')->find(1);
-        $resource->id = 1;
-        $resource->name = "2021-2022";
-        return $resource;
+        $year = date('Y');
+        $nextYear = $year + 1;
+        $yearName = $year . "-" . $nextYear; 
+        $academicYear = AcademicYear::where('name', $yearName)->first();
+        
+        if (!$academicYear) {
+            $academicYear = AcademicYear::create([
+                "name" => $yearName,
+                "start_date" => $year . "-01-01",
+                "end_date" => $nextYear . "-01-01",
+                "faculty_id" => optional(request()->user)->faculty_id
+            ]);
+        }
+        
+        return $academicYear;
     }
     
     
@@ -24,9 +37,18 @@ class AppSetting extends Model
      * 
      */
     public static function getCurrentTerm() {
-        $resource = new \Modules\Admin\Entities\Term();//DB::table('terms')->find(1);
-        $resource->id = 1;
-        $resource->name = "term1";
-        return $resource;
+        $currentTerm = DB::table('settings')->find(1);
+        
+        if (!$currentTerm) {
+            $currentTerm = DB::table('settings')->insert([
+                "id" => 1,
+                "name" => 'term',
+                "value" => 1,
+                "faculty_id" => optional(request()->user)->faculty_id
+            ]);
+        }
+         
+        $term = Term::find($currentTerm->value);
+        return $term;
     }
 }

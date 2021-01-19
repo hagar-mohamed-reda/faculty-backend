@@ -5,6 +5,7 @@ namespace Modules\Student\Entities;
 use Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\SoftDeletes;
 
+
 class Student extends Model
 {
     use SoftDeletes;
@@ -41,6 +42,10 @@ class Student extends Model
 
     public function division(){
         return $this->belongsTo(Division::class, 'division_id');
+    }
+
+    public function faculty(){
+        return $this->belongsTo(Faculty::class, 'faculty_id');
     }
 
     public function department(){

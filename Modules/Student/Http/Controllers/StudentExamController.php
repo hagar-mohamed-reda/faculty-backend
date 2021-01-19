@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Student\Entities\StudentExam;
 use App\AppSetting;
+use Modules\Student\Entities\Exam;
 use Auth;
 use DB;
 class StudentExamController extends Controller
@@ -28,8 +29,13 @@ class StudentExamController extends Controller
         if ($request->is_ended > 0)
             $query->where('is_ended', $request->is_ended);
 
+        if ($request->course_id > 0) {
+            $examIds = Exam::where('course_id', $request->course_id)->pluck('id')->toArray();
+            $query->whereIn('exam_id', $examIds);
+        }
 
-        return $query->with(['doctor', 'exam'])->latest()->paginate(10);
+
+        return $query->with(['exam'])->latest()->paginate(10);
     }
 
     public function load(Request $request, $resource) {

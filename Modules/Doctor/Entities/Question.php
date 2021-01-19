@@ -24,7 +24,7 @@ class Question extends Model
         'notes'
     ];
 
-    protected $appends = ['can_delete', 'image_url'];
+    protected $appends = ['can_delete', 'image_url', 'answer'];
 
     public function getCanDeleteAttribute() {
         return true;
@@ -34,6 +34,11 @@ class Question extends Model
         return ($this->image)? url($this->image) : null;
     }
 
+    public function getAnswerAttribute() {
+        $answer = $this->choices()->where('is_answer', '1')->first();
+        return optional($answer)->text;
+    }
+    
     public function questionType(){
         return $this->belongsTo(QuestionType::class, 'question_type_id');
     }
@@ -52,6 +57,21 @@ class Question extends Model
 
     public function choices(){
         return $this->hasMany(QuestionChoice::class, 'question_id')->orderByRaw("RAND()");
+    }
+    
+    public function getDegree($exam) {
+        if (!$exam)
+            return 0;
+        $detail = $exam->examDetails()
+                ->where('question_level_id', $this->question_level_id)
+                ->where('question_type_id', $this->question_type_id)
+                ->first();
+        
+        $grade = 0;
+        if ($detail) {
+            $grade = $detail->total / $detail->number;
+        }
+        return $grade;
     }
 
 }

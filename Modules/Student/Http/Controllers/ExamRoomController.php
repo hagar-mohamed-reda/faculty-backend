@@ -12,6 +12,8 @@ use Modules\Student\Entities\StudentExam;
 use Modules\Student\Entities\RegisterStudent;
 use Modules\Student\Entities\ExamQuestion;
 use Modules\Student\Entities\ExamAssign;
+use Modules\Doctor\Entities\Question;
+use Modules\Student\Entities\StudentExamDetail;
 use App\AppSetting;
 use Auth;
 use DB;
@@ -29,7 +31,7 @@ class ExamRoomController extends Controller {
         date_default_timezone_set('Africa/Cairo');
         
         // init current date time
-        $datetime = date('Y-m-d H:i:s');
+        $datetime = date("Y-m-d H:i:s");
         
         // get student exams ids
         $studentExamIds = StudentExam::where('student_id', $request->user->id)->where('is_ended', '1')->pluck('exam_id')->toArray();
@@ -45,8 +47,8 @@ class ExamRoomController extends Controller {
                 ->whereIn('course_id', $registerCourseIds)
                 ->whereIn('id', $studentAssignIds)
                 ->whereNotIn('id', $studentExamIds)
-                ->whereDate('start_time', '<=', $datetime)
-                ->whereDate('end_time', '>=', $datetime);
+                ->where('start_time', '<=', $datetime)
+                ->where('end_time', '>=', $datetime);
         
         return $examQuery;
     }
@@ -120,4 +122,55 @@ class ExamRoomController extends Controller {
             return responseJson (1, __('done'), $studentExam);
     }
 
+    public function store(Request $request) {
+        try {
+            $data = $request->all();  
+            $studentId = $request->user->id;
+            $exam = Exam::find($request->exam_id);
+            $studentExam = StudentExam::find($request->student_exam_id);
+            
+            if ($studentExam->is_ended)
+                return responseJson (0, __("exam ended"));
+
+            // delete old 
+            $studentExam->details()->delete();
+              
+            // add new
+            $totalGrade = 0;
+            foreach ($request->questions as $q) { 
+                $question = Question::find($q['question_id']);
+                $studentAnswer = StudentExamDetail::find($q['student_detail_id']);
+                $grade = 0;
+                 
+                if (str_replace(" ", "", $q['answer']) == str_replace(" ", "", $question->answer)) {
+                    $grade = $question->getDegree($exam); 
+                }
+                
+                if ($question->question_type_id == 4) {
+                    $grade = 0;
+                }
+                
+                $totalGrade += $grade;
+                StudentExamDetail::create([
+                    "student_exam_id" => $studentExam->id,
+                    "question_id" => $q['question_id'],
+                    "grade" => $grade,
+                    "answer" => $q['answer'],
+                    "answer_id" => null
+                ]);
+            }
+
+            $studentExam->update([
+                "is_ended" => 1,
+                "grade" => $totalGrade,
+                "end_time" => date('Y-m-d H:i:s'),
+            ]);
+
+
+            watch(__('finish the exam ') . " " . $exam->name, "fa fa-newspaper-o");
+            return responseJson(1, __('done'));
+        } catch (Exception $ex) {
+            return responseJson(0, $ex->getMessage()); 
+        }
+    }
 }

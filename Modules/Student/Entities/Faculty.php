@@ -19,9 +19,13 @@ class Faculty extends Model
         'target_file',
     ];
 
-    protected $appends = ['can_delete'];
+    protected $appends = ['can_delete', 'logo_url'];
 
     public function getCanDeleteAttribute() {
         return true;
+    }
+
+    public function getLogoUrlAttribute() {
+        return url($this->logo);
     }
 }

@@ -30,6 +30,7 @@ class AuthController extends Controller
                             ->orWhere('phone', $request->email)
                             ->orWhere('username', $request->email)
                             ->where("password", $request->password)
+                            ->with(['level', 'department', 'division', 'faculty'])
                             ->first();
 
             if ($user) {
