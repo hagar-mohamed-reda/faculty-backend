@@ -18,7 +18,7 @@ class RegisterStudentsImport implements ToModel {
     public function model(array $row) {
         try {
             $student = Student::where('code', $this->preNumber($row[0]))->first();
-            $course = Course::where('code', $this->preNumber($row[1]))->first();
+            $course = Course::find(request()->course_id);
             $stds = RegisterStudent::where('student_id', $student->id)
                     ->where('course_id', $course->id)
                     ->first();

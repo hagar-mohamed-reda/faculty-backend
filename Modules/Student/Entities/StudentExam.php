@@ -63,9 +63,11 @@ class StudentExam extends Model {
         if ($this->details()->count() <= 0) { 
             $randQuestions = $this->exam->getQuestionsQuery()->get();
             foreach ($randQuestions as $item) {
+                $degree = $item->getDegree($this->exam);
                 StudentExamDetail::create([
                     "question_id" => $item->id,
                     "student_exam_id" => $this->id,
+                    "total" => 0
                 ]);
             }
         }

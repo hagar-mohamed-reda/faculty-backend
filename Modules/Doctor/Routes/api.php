@@ -61,10 +61,13 @@ Route::prefix('/doctor')->middleware(['doctor_auth'])->group(function(){
     Route::get('exams', 'ExamController@get');
     Route::get('exams/{resource}', 'ExamController@load');
     Route::get('exams/students/{resource}', 'ExamController@getStudents');
+    Route::post('exams/assign/{resource}', 'ExamController@assign');
+    Route::get('exams/groups/{resource}', 'ExamController@groups');
+    Route::get('exams/blanks/{resource}', 'ExamController@blanks');
     Route::post('exams/store', 'ExamController@store');
     Route::post('exams/update/{resource}', 'ExamController@update');
     Route::post('exams/delete/{resource}', 'ExamController@destroy');
-
+ 
 });
 Route::post('doctor/login', 'AuthController@login');
 Route::post('doctor/forget-password', 'AuthController@forgetPassword');

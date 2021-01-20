@@ -1,0 +1,16 @@
+
+exam_hard_levels
+	- id
+	- name
+	- notes
+	- doctor_id
+	- created_at
+	- updated_at
+
+exam_question
+	- hard_level_id
+
+
+
+CKEDITOR.instances['name'].getData()
+App\Cart::all()
