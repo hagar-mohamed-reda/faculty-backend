@@ -12,6 +12,8 @@ class RegisterDoctor extends Model
         'faculty_id',
         'group_id',
         'doctor_id',
+        'academic_year_id',
+        'term_id'
     ];
 
     protected $appends = ['can_delete'];
