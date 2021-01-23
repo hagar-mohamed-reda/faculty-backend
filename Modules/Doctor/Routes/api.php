@@ -65,6 +65,9 @@ Route::prefix('/doctor')->middleware(['doctor_auth'])->group(function(){
     Route::post('exams/update/{resource}', 'ExamController@update');
     Route::post('exams/delete/{resource}', 'ExamController@destroy');
 
+    //student_assignments start
+    Route::get('student-assignments', 'StudentAssignmentController@getStdAssignments');
+
 });
 Route::post('doctor/login', 'AuthController@login');
 Route::post('doctor/forget-password', 'AuthController@forgetPassword');

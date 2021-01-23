@@ -5,75 +5,32 @@ namespace Modules\Doctor\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-
+use DB;
 class StudentAssignmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
-    {
-        return view('doctor::index');
-    }
+    public function getStdAssignments(Request $request){
+        $stdAssigns = DB::table('student_assignments')
+                    ->Join('students', 'students.id', '=', 'student_assignments.student_id');
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        return view('doctor::create');
-    }
+        $students = DB::table('students');
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if ($request->search)
+            $students->where('name', 'like', '%' . $request->search . '%');
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('doctor::show');
-    }
+        if ($request->student_id > 0)
+            $students->where('id', $request->student_id);
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('doctor::edit');
-    }
+        if ($request->level_id > 0)
+            $students->where('level_id', $request->level_id);
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        if ($request->department_id > 0)
+            $students->where('department_id', $request->department_id);
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+
+        /*$students->leftJoin('student_assignments', 'students.id', '=', 'student_assignments.student_id')
+                ->unionAll($students)
+                ->latest()->paginate(60);*/
+
+        return $students->latest()->paginate(60);
     }
 }
