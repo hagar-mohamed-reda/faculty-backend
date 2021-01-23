@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Admin\Entities\LoginHistory;
+use App\User;
 
 class AuthController extends Controller
 {
@@ -26,19 +27,19 @@ class AuthController extends Controller
 
 
         try {
-            $user = User::where("email", $request->email)->orWhere('phone', $request->email)
-            ->where("password", $request->password)
-            ->where('type', $request->type)
+            $user = User::where("username", $request->email) 
+            ->where("password", $request->password) 
             ->first();
 
             if ($user) {
-                if ($user->active == 0)
+                //if ($user->active == 0)
                     //return redirect($redirect . "?status=0&msg=" . __('your account is not confirmed'));
-                    return responseJson(0, __('your account is not confirmed'));
+                //    return responseJson(0, __('your account is not confirmed'));
 
-
-                Auth::login($user);
-
+                $user->update([
+                    "api_token" => randToken()
+                ]);
+ 
                 LoginHistory::create([
                     'ip' => $request->ip(),
                     'user_id' => $user->id,

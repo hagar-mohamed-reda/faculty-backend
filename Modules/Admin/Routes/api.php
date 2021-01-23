@@ -13,23 +13,26 @@ use Illuminate\Http\Request;
 |
 */
 
+    Route::get('levels', 'LevelController@index');
+    Route::get('departments', 'DepartmentController@index');
+    Route::get('divisions', 'DivisionController@index');
+    Route::get('specializations', 'SpecializationController@index');
+    Route::get('degrees', 'DegreeController@index');
+    Route::get('academic-years', 'AcademicYearController@index');
 
 Route::group(['middleware' => 'api_auth'], function () {
 
     //levels start
-    Route::get('levels', 'LevelController@index');
     Route::post('levels/store', 'LevelController@store');
     Route::post('levels/update/{resource}', 'LevelController@update');
     Route::post('levels/delete/{resource}', 'LevelController@destroy');
 
     //departments start
-    Route::get('departments', 'DepartmentController@index');
     Route::post('departments/store', 'DepartmentController@store');
     Route::post('departments/update/{resource}', 'DepartmentController@update');
     Route::post('departments/delete/{resource}', 'DepartmentController@destroy');
 
     //divisions start
-    Route::get('divisions', 'DivisionController@index');
     Route::post('divisions/store', 'DivisionController@store');
     Route::post('divisions/update/{resource}', 'DivisionController@update');
     Route::post('divisions/delete/{resource}', 'DivisionController@destroy');
@@ -41,13 +44,11 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('facultys/delete/{resource}', 'FacultyController@destroy');
 
     //specializations start
-    Route::get('specializations', 'SpecializationController@index');
     Route::post('specializations/store', 'SpecializationController@store');
     Route::post('specializations/update/{resource}', 'SpecializationController@update');
     Route::post('specializations/delete/{resource}', 'SpecializationController@destroy');
 
     //degrees start
-    Route::get('degrees', 'DegreeController@index');
     Route::post('degrees/store', 'DegreeController@store');
     Route::post('degrees/update/{resource}', 'DegreeController@update');
     Route::post('degrees/delete/{resource}', 'DegreeController@destroy');
@@ -65,7 +66,6 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::post('research-degree-maps/delete/{resource}', 'ResearchDegreeMapController@destroy');
 
     //academic-years start
-    Route::get('academic-years', 'AcademicYearController@index');
     Route::post('academic-years/store', 'AcademicYearController@store');
     Route::post('academic-years/update/{resource}', 'AcademicYearController@update');
     Route::post('academic-years/delete/{resource}', 'AcademicYearController@destroy');
@@ -136,6 +136,7 @@ Route::group(['middleware' => 'api_auth'], function () {
     Route::get('roles', 'RoleController@get');
     Route::post('roles/store', 'RoleController@store');
     Route::post('roles/update/{resource}', 'RoleController@update');
+    Route::post('roles/assign/{resource}', 'RoleController@updatePermissions');
     Route::post('roles/delete/{resource}', 'RoleController@destroy');
 
 

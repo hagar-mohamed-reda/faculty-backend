@@ -9,7 +9,7 @@ class StudentExamDetail extends Model {
 
     protected $table = 'student_exam_details';
     protected $fillable = [
-        'student_exam_id', 'question_id', 'answer_id', 'grade', 'answer'
+        'student_exam_id', 'question_id', 'answer_id', 'grade', 'answer', 'total'
     ];
     protected $appends = [
         'question'

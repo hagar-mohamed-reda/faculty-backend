@@ -16,11 +16,11 @@ class CourseGroupController extends Controller {
 
     public function store(Request $request) {
         $validator = validator($request->all(), [
-            "name" => "required|unique:course_groups,name," . $request->id,
+            "name" => "required",
         ]);
 
         if ($validator->fails()) {
-            return responseJson(0, $validator->errors()->getMessages(), "");
+            return responseJson(0, $validator->errors()->first(), "");
         }
         try {
             $data = $request->all();
@@ -40,11 +40,11 @@ class CourseGroupController extends Controller {
 
     public function update(Request $request, CourseGroup $resource) {
         $validator = validator($request->all(), [
-            "name" => "required|unique:course_groups,name," . $request->id,
+            "name" => "required",
         ]);
 
         if ($validator->fails()) {
-            return responseJson(0, $validator->errors()->getMessages(), "");
+            return responseJson(0, $validator->errors()->first(), "");
         }
         try {
             $resource->update($request->all());

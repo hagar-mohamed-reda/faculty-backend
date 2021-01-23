@@ -4,6 +4,7 @@ namespace Modules\Student\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class StudentExam extends Model {
 
     protected $table = 'student_exams';
@@ -20,14 +21,34 @@ class StudentExam extends Model {
         'academic_year_id',
         'term_id',
     ];
-    protected $appends = ['can_delete'];
+    protected $appends = ['can_delete', 'course', 'doctor', 'level', 'department'];
 
     public function getCanDeleteAttribute() {
         return true;
     }
 
+    public function getCourseAttribute() {
+        return Course::find(optional($this->exam)->course_id);
+    }
+
+    public function getDoctorAttribute() { 
+        return Doctor::where('id', optional($this->exam)->doctor_id)->select(['id', 'name', 'photo'])->first();
+    }
+
+    public function getLevelAttribute() { 
+        return Level::find(optional($this->student)->level_id);
+    }
+
+    public function getDepartmentAttribute() { 
+        return Department::find(optional($this->student)->department_id);
+    }
+
     public function doctor() {
         return $this->belongsTo(Doctor::class, "doctor_id");
+    }
+
+    public function student() {
+        return $this->belongsTo(Student::class, "student_id");
     }
 
     public function exam() {
@@ -42,9 +63,11 @@ class StudentExam extends Model {
         if ($this->details()->count() <= 0) { 
             $randQuestions = $this->exam->getQuestionsQuery()->get();
             foreach ($randQuestions as $item) {
+                $degree = $item->getDegree($this->exam);
                 StudentExamDetail::create([
                     "question_id" => $item->id,
                     "student_exam_id" => $this->id,
+                    "total" => 0
                 ]);
             }
         }

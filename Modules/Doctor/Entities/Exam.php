@@ -28,7 +28,11 @@ class Exam extends Model
         'type',
     ];
 
-    protected $appends = ['can_delete'];
+    protected $appends = ['can_delete', 'has_correct'];
+
+    public function getHasCorrectAttribute() {
+        return $this->examDetails()->where('question_type_id', 4)->exists();
+    }
 
     public function getCanDeleteAttribute() {
         return true;
@@ -43,9 +47,12 @@ class Exam extends Model
         return Question::whereIn('id', $ids);
     }
 
+    public function studentExams(){
+        return $this->hasMany(ExamAssign::class, "exam_id"); 
+    }
+
     public function students(){
-        $ids = $this->examQuestions()->pluck('question_id')->toArray();
-        return Question::whereIn('id', $ids);
+        return $this->hasMany(ExamAssign::class, "exam_id"); 
     }
 
     public function student(){

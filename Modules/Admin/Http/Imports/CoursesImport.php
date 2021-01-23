@@ -26,6 +26,8 @@ class CoursesImport implements ToModel
                     'final_degree' => $row[3],
                     'level_id'=> $this->preNumber($row[4]),
                     'description' => $row[5],
+                    'active' => '1',
+                    'faculty_id' => optional(request()->user)->faculty_id,
                 ]);
             } else {
                 $cours->update([

@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
 use Maatwebsite\Excel\Facades\Excel; 
+use App\RolePermission;
 use App\Role;
 use DB;
 
@@ -70,6 +71,21 @@ class RoleController extends Controller {
         }
     }
 
+    public function updatePermissions(Request $request, $resource) { 
+        $role = Role::find($resource); 
+        // remove old permissions
+        $role->rolePermissions()->delete();
+
+        foreach($request->permissions as $item) {
+            RolePermission::create([
+                "role_id" => $id,
+                "permission_id" => $item
+            ]);
+        }
+
+        return responseJson(1, __('done'));
+    }
+    
     public function destroy(Role $resource) {
         try {
             watch("remove role " . $resource->name, "fa fa-th-list");

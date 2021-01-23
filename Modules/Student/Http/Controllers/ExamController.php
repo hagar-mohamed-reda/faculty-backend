@@ -50,6 +50,6 @@ class ExamController extends Controller {
                 ->find($resource);
         $resource->questions = $resource->questions()->with(['questionType', 'questionLevel', 'questionCategory', 'course', 'choices'])->get();
         return $resource;
-    }
+    } 
 
 }
