@@ -70,6 +70,7 @@ Route::prefix('/doctor')->middleware(['doctor_auth'])->group(function(){
 
     //student_assignments start
     Route::get('student-assignments', 'StudentAssignmentController@getStdAssignments');
+    Route::post('update-assignments', 'StudentAssignmentController@updateAssignments');
 
 
 });

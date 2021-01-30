@@ -33,15 +33,10 @@ class StudentAssignmentController extends Controller {
         if ($request->department_id > 0)
             $studentQuery->where('department_id', $request->department_id);
 
-        $students = $studentQuery
-                ->select('id', 'name', 'code', 'level_id', 'department_id', 'photo')
-                ->with(['level', 'department'])
-                ->latest()->paginate(60);
-        
         $assigmentQuery = Assignment::query()
                 ->whereIn('course_id', $coursesIds)
                 ->where('doctor_id', $request->user->id);
-
+        
         //return $assigmentQuery->get();
 
         if ($request->course_id > 0) {
@@ -51,11 +46,31 @@ class StudentAssignmentController extends Controller {
         if ($request->lecture_id > 0) {
             $assigmentQuery->where('lecture_id', $request->lecture_id);
         }
+
+        if ($request->assignment_id > 0) {
+            $assigmentQuery->where('id', $request->assignment_id);
+        }
+        
+        $assigmentQuery2 = clone $assigmentQuery;
+        $assignmentIds = "";
+        if (count($assigmentQuery2->pluck('id')->toArray()) > 0)
+            $assignmentIds = implode(",", $assigmentQuery2->pluck('id')->toArray());
+        
+        
+        $students = $studentQuery
+                ->select('id', 'name', 'code', 'level_id', 'department_id', 'photo', 
+                        DB::raw('(select sum(student_grade) from student_assignments where student_id = students.id and assignment_id in ('.$assignmentIds.') ) as assignment_total '))
+                ->with(['level', 'department'])
+                ->orderBy('assignment_total')->paginate($request->page_length);
+        
+
         foreach ($students as $student) { 
             $cloneAssignmentQuery = clone $assigmentQuery;
             $student->assignments = $cloneAssignmentQuery->select(
                             '*',
                             DB::raw('(select file from student_assignments where student_id=' . $student->id . ' and assignment_id=assignments.id ) as student_file'),
+                            DB::raw('(select student_assignments.id from student_assignments where student_id=' . $student->id . ' and assignment_id=assignments.id ) as student_assignment_id'),
+                            DB::raw('(select student_assignments.student_grade from student_assignments where student_id=' . $student->id . ' and assignment_id=assignments.id ) as student_grade'),
                             DB::raw('(select CONCAT("' . url('/') . '", student_assignments.file) from student_assignments where student_id=' . $student->id . ' and assignment_id=assignments.id ) as student_file_url')
                     )->get();
         }
@@ -66,6 +81,32 @@ class StudentAssignmentController extends Controller {
             "students" => $students,
             "assignments" => $assignmentCountQuery->get(['name', 'id'])
         ];
+    }
+    
+    
+    public function updateAssignments(Request $request) {
+        $data = $request->data;//json_decode($request->data);
+        
+        foreach($data as $row) { 
+            $studentAssignment = StudentAssignment::find($row['student_assignment_id']);
+            $student = Student::find($row['student_id']);
+            
+            if (!$studentAssignment) {
+                $studentAssignment = StudentAssignment::create([
+                    "student_id" => $row['student_id'],
+                    "assignment_id" => $row['assignment_id'],
+                    "student_grade" => $row['student_grade'],
+                    "faculty_id" => $student->faculty_id,
+                ]);
+            } else {
+                $studentAssignment->update([
+                    "student_grade" => $row['student_grade']
+                ]);
+            }
+            
+        }
+        
+        return responseJson(1, __('done'));
     }
 
 }

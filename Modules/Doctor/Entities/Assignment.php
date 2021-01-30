@@ -33,7 +33,7 @@ class Assignment extends Model
     }
     
     public function getUploadsAttribute() { 
-        return 0;
+        return StudentAssignment::where('assignment_id', $this->id)->count();
     }
 
     public function doctor(){

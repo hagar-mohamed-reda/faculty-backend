@@ -8,7 +8,7 @@ class StudentAssignment extends Model {
 
     protected $table = "student_assignments";
     protected $fillable = [
-        'file', 'student_id', 'assignment_id', 'faculty_id'
+        'file', 'student_id', 'assignment_id', 'faculty_id', 'student_grade'
     ];
 
 }
